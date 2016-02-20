@@ -3,11 +3,13 @@ title: AJAX初探
 date: 2016-02-19 16:50:15
 tags: [学习, agui.com]
 ---
+<!-- toc -->
+
 在制作agui.com网站原型时，需要用到单页应用，自然涉及到了无刷新更新网页的技术。根据自己以前知道的知识，有两种方法来解决：原生AJAX和AngularJS/jQ等封装AJAX。
 
 为了了解AJAX技术的实现原理及练习原生js，从原生AJAX开始学习：
 
-1.XMLHttpReques/ActiveXObjectt对象是AJAX技术的基础
+### 1.XMLHttpReques/ActiveXObjectt对象是AJAX技术的基础
 
 * 创建一个实例： `var anAjax = new XMLHttpRequest();`/`var anAjax = new ActiveXObject("Microsoft.XMLHTTP");`
 * 兼容性问题：IE 5/6 使用 `ActiveXObject`对象来实现AJAX
@@ -22,15 +24,15 @@ tags: [学习, agui.com]
 	  }
 	```
 
-2.AJAX的实例方法`open(method,url,async)`
+### 2.AJAX的实例方法`open(method,url,async)`
 
 * open()方法规定了请求的类型/URL/是否异步
 
-3.AJAX的实例方法`send(string)`
+### 3.AJAX的实例方法`send(string)`
 
 * send()方法将请求发送到服务器，*string*仅用于POST请求
 
-4.请求类型GET/POST的选择
+### 4.请求类型GET/POST的选择
 
 GET比较简单和快速，大部分情况下能用。
 
@@ -41,7 +43,7 @@ GET比较简单和快速，大部分情况下能用。
 * 发送包含未知字符的用户输入时，POST比GET更稳定可靠
 * 扩展：参见文章（get和POST选择）
 
-5.GET请求
+### 5.GET请求
 
 * 基本
 
@@ -64,7 +66,7 @@ GET比较简单和快速，大部分情况下能用。
 	xmlhttp.send();
 	```
 
-6.POST请求
+### 6.POST请求
 
 * 基本
 
@@ -83,9 +85,11 @@ GET比较简单和快速，大部分情况下能用。
 
 * `setRequestHeader(header,value)`方法：规定了头名称和头值
 
-7.形参url-服务器上的文件地址，可以是任何类型的文件或服务器脚本，服务器脚本可以在传回响应之前，在服务器上执行任务
+### 7.形参url-服务器上的文件地址
 
-8.形参async-是否异步
+可以是任何类型的文件或服务器脚本，服务器脚本可以在传回响应之前，在服务器上执行任务
+
+### 8.形参async-是否异步
 
 * 异步时，浏览器发送请求之后不等待服务器响应，继续执行后面的工作
 
@@ -106,7 +110,7 @@ GET比较简单和快速，大部分情况下能用。
 
 * 同步/异步可选，似乎说明了`XMLHttpRequest`对象还有除了AJAX之外的其他作用，文章结尾我将扩展一下`XMLHttpRequest`对象，来看一下它是不是还有其他作用
 
-9.如何处理服务器响应
+### 9.如何处理服务器响应
 
 * `XMLHttpRequest`对象中有两个属性`responseText`和`responseXML`用来存储服务器返回的数据
 * 如果服务器返回的数据并不是XML格式，则使用`responseText`属性来得到相应数据
@@ -123,7 +127,7 @@ GET比较简单和快速，大部分情况下能用。
 	```
 * 如果返回的是json呢？使用`responseText`获取来获取。然后将其转为json（如`window.JSON.parse(str);`）*未做测试，不知是否可行*
 
-10.状态
+### 10.状态
 
 * `onreadystatechange`事件属性
 
@@ -156,7 +160,7 @@ GET比较简单和快速，大部分情况下能用。
 	    }
 	  }
 	```
-11.使用AJAX的正确姿势——面向对象
+### 11.使用AJAX的正确姿势——面向对象
 
 ```javascript
 //类的构建定义，主要职责就是新建XMLHttpRequest对象
@@ -262,9 +266,9 @@ var MyXMLHttpRequest=function(){
 
 由此看来AJAX只是异步使用`XMLHttpRequest`对象的一种方式。
 
-### 实验：使用AJAX技术更新页面
+### 实验：自己搭建node后台服务器，模拟使用AJAX的情况
 
-实验中我们采用Express示例项目，它已经为我们构建好了一个基础的服务器，现在我们来修改一下：
+实验中我们采用Express，它已经为我们构建好了一个基础的服务器，现在我们来修改一下：
 
 1.在index.ejs文件中</body>前后增加下面的代码：
 
@@ -300,4 +304,12 @@ var MyXMLHttpRequest=function(){
 	}
 	```
 
-4.回到根目录，运行npm start
+4.回到根目录，运行npm start，在网页中点击按钮，我们可以看到点击之后，整个body的内容在没有页面刷新的情况下，已经被替换成了我们的html文件中的那一堆字符串，效果如下：
+
+![点击之前](/images/first-ajax-1.png)
+
+![点击之后](/images/first-ajax-2.png)
+
+![同时可以查看服务器的记录](/images/first-ajax-3.png)
+
+

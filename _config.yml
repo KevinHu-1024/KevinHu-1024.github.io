@@ -75,7 +75,9 @@ deploy:
 
 # Markdown-it config
 ## Docs: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki/
-markdown: 'default'
+markdown:
+  render:
+    html: true
 
 # git-backup
 ## Docs: https://github.com/coneycode/hexo-git-backup
@@ -83,3 +85,8 @@ backup:
     type: git
     repository:
        github: https://github.com/KevinHu-1024/KevinHu-1024.github.io.git,hexo
+
+# hexo-toc
+# Docs:https://github.com/bubkoo/hexo-toc
+toc:
+  maxDepth: 3
