@@ -84,7 +84,7 @@ markdown:
 backup:
     type: git
     repository:
-       github: https://github.com/KevinHu-1024/KevinHu-1024.github.io.git,hexo
+       github: git@github.com:KevinHu-1024/KevinHu-1024.github.io.git,hexo
 
 # hexo-toc
 # Docs:https://github.com/bubkoo/hexo-toc

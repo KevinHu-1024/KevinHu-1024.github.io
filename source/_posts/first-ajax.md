@@ -312,4 +312,8 @@ var MyXMLHttpRequest=function(){
 
 ![同时可以查看服务器的记录](/images/first-ajax-3.png)
 
+### 总结
+
+![总结](/images/first-ajax-4.png)
+
 
