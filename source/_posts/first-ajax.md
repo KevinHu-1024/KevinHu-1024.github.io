@@ -125,7 +125,7 @@ GET比较简单和快速，大部分情况下能用。
 	  }
 	document.getElementById("myDiv").innerHTML=str;
 	```
-* 如果返回的是json呢？使用`responseText`获取来获取。然后将其转为json（如`window.JSON.parse(str);`）*未做测试，不知是否可行*
+* 如果返回的是json呢？使用`responseText`获取来获取。然后4将其转为json（如`window.JSON.parse(str);`）*可行*
 
 ### 10.状态
 

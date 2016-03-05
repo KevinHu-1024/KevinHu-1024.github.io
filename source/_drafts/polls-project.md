@@ -120,8 +120,6 @@ Fedora下的DNF包管理中的源都太古老了，express竟然是v3的
 
 有时间看一下html2jade的源码，提交一下有关中文转换的错误
 
-开始正式切入ts进行问卷引擎的设计
-
 读别人的问卷引擎代码
 
 本周已经进入开发中倒数第三难的部分了：问卷类的开发
@@ -131,6 +129,55 @@ Fedora下的DNF包管理中的源都太古老了，express竟然是v3的
 和最难的：权限控制及后台管理系统
 
 还有收尾：页面美化
+
+查找压力测试相关内容
+
+2016.03.01
+
+问卷部分有进度绑定和数据绑定，可不可以拿ng或vue来做？
+
+用jade重构问卷生成程序，后端生成json格式的问卷数据，jade按顺序渲染
+
+完成问卷的jade渲染模板
+
+查询awesome-nodejs
+
+2016.03.02
+
+后台系统用ng生成
+
+问卷提交采用原生方案，问卷生成和用户管理使用ng方案；PC端页面采用原始的原生ajax生成，前后端耦合，而移动端使用ng+Ionic生成，前后端分离。虽然这样系统比较松散，但是能练习到更多的技术，以后都向ng靠拢
+
+设计问卷模型、用户模型、问题模型，准备放入数据库
+
+2016.03.03
+
+数据模型测试，被挫的够呛，晚上狂补mogoose的api和原生mongodb的CURD文档
+
+2016.03.04
+
+去望京美团门外逛了一圈，充点信仰值，给自己打气
+
+数据模型测试成功，并对参考项目的代码进行了重构
+
+2016.03.05
+
+坑爹的DNF，在运行服务器时connect-mongo[报错](https://github.com/hapijs/joi/issues/758)，查询之后发现是nodejs版本太低，不应该啊。于是查了一下dnf上nodejs的最新版本，才0.10.36版！！上一次express就是因为版本太老，这次又是...DNF想打败yum还有很长的路要走啊！
+
+于是开始下载nodejs手动更新，还遇到了如何在fedora下设置环境变量的问题，查询[解决](http://blog.csdn.net/jianqi2010/article/details/6256006)，这里第一个方案只是临时的，想要永久设置，需要走二三方案并重启系统。
+
+解决完成之后connect-mongo报了新错误`Connection strategy not found`，再次[查询](https://github.com/nswbmw/N-blog/issues/105)得知，修改了参量传递，问题解决
+
+然后又`express-session`报了新警告，[查询](http://stackoverflow.com/questions/23773537/how-are-connect-mongo-mongostore-sessions-actually-saved)得知m，增加了两个默认参量，问题解决
+
+mongoose 定义类方法 `类Schema.statics.方法名 = 函数`，[参考 MEAN Web Development]
+
+momgoose 定义实例方法 `类Schema。method.方法名 = 函数`，[参考 MEAN Web Development]
+
+一个模块加载顺序导致的bug
+
+服务器的req.body一直是undefined，折腾了一上午，控制台一直无法获得请求体的内容，后来去查了一下req.body获取不到的情况，根据别人的问题检查了jade模板，发现post方法被写在了button上，改到form上之后故障依旧，再参考其他问题，有人提到了[模块加载顺序的问题](http://www.hubwiz.com/exchange/55eef7bb8e96ca372f9b606f)/[模块加载顺序的问题](http://cnodejs.org/topic/54c35a3e0d075f173d433e94)，按照这个思路检查了app.js，发现路由引入在了各种paser之引入前，颠倒加载顺序之后，故障排除
+
 
 
 ### 面试时具备的知识
@@ -188,3 +235,9 @@ restful数据服务器
 常用的工作流程库
 
 原生js原型继承/类的写法，注意和ts的区别
+
+写一个UL重用列表仿ios的动态删除，用二分法做
+
+数据结构算法
+
+jade在前端渲染中的弊端 压缩和缩进
