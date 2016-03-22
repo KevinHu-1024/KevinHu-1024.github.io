@@ -10,6 +10,8 @@ tags: 读书笔记
 
 #### URL的组成
 
+<!-- more -->
+
 	以http://google.com/search?q=grunt&first=9和http://localhost:3000/about?test=1#history为例
 
 * 协议

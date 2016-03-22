@@ -3,11 +3,12 @@ title: AJAX初探
 date: 2016-02-19 16:50:15
 tags: [学习, agui.com]
 ---
-<!-- toc -->
 
 在制作agui.com网站原型时，需要用到单页应用，自然涉及到了无刷新更新网页的技术。根据自己以前知道的知识，有两种方法来解决：原生AJAX和AngularJS/jQ等封装AJAX。
 
 为了了解AJAX技术的实现原理及练习原生js，从原生AJAX开始学习：
+
+<!-- more -->
 
 ### 1.XMLHttpReques/ActiveXObjectt对象是AJAX技术的基础
 

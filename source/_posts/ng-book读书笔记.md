@@ -6,11 +6,11 @@ tags:
 date: 2016-02-22 20:27:04
 ---
 
-<!-- toc -->
-
 # Data Binding and Your First AngularJS Web Application
 
 ## AngularJS的脏检测机制（dirty checking）
+
+<!-- more -->
 
 1. 当AngularJS认为被监视的值可能要发生更改，即去调用`$digest()`检测值是否被修改，同时会检测潜在的被修改的值
 

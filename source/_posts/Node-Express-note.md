@@ -12,6 +12,8 @@ tags: 读书笔记
 
 2.(P15)响应吗 *->第六章*
 
+<!-- more -->
+
 #### 省时省力的Express-脚手架
 
 3.(P18)Boilerplate脚手架（生成空白的H5网站）和Bootstrap *->第七章*
