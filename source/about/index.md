@@ -56,13 +56,13 @@ tags: [关于]
 
 #### 主要
 
-- [agui.com]()
+- [agui.com](https://github.com/KevinHu-1024/agui.com)
 
     一个股民心理指数的调查网站，包括问卷调查、问卷管理、数据可视化、后台CMS、会员权限管理等功能，作为练手项目开发，非商业项目。还在初步的构建中，有股民社区的用户支持，故预计支撑4K并发访问量，采用MEAN架构，前后端混合的渲染模式（为了多练习几种技术），成熟之后将过渡到Restful+前端渲染架构，并衍生出原生App。
     
-    目前开发了一个月，近期为了找工作，暂时停止了本项目的开发，阶段性的总结参见[agui.com项目总结]()
+    目前开发了一个月，近期为了找工作，暂时停止了本项目的开发，阶段性的总结参见[agui.com项目总结](/tags/项目总结/)
 
-- [模仿拉勾网主页]()
+- [模仿拉勾网主页](https://github.com/KevinHu-1024/other_test)
 
     实现了拉勾网首页的所有核心效果
 
@@ -83,29 +83,29 @@ tags: [关于]
 
 #### 其他项目
 
-- [KevinHu-1024.github.io]()
+- [KevinHu-1024.github.io](https://github.com/KevinHu-1024/KevinHu-1024.github.io)
 
     个人博客源代码（运行于阿里云 with CentOS）
     
-- [nodeblog]()
+- [nodeblog](https://github.com/KevinHu-1024/N-blog)
 
     初步探索M-E-A-N架构
     
-- [ptteng_task]()
+- [ptteng_task](https://github.com/KevinHu-1024/ptteng_task)
 
     自学html+css的时候所做的任务记录，包括对IT修真院官方网站的模仿，和一些移动端页面
     
-- [ImgSlider]()
+- [ImgSlider](https://github.com/KevinHu-1024/ImgSlider)
 
     自学html+css时，根据项目需要写一个轮播图，看了2两小时廖雪峰的js教程，用了两天实现了组件化的轮播图。用了CSS3动画，js的工厂模式，完全自主实现（那时都不知道轮播图应该用js动画来写……现在看这个代码已经很渣了……）
     
-- [littleWeather]()
+- [littleWeather](https://github.com/KevinHu-1024/littleWeather)
 
     业余自学iOS开发时的示例项目
 
 ### 原创技术文章优选
 
-- [agui.com项目总结]()
+- [agui.com项目总结](/tags/项目总结/)
     - 纠结的技术选型
     - 前端渲染与后端渲染的选择
     - 前后端混合渲染架构 
@@ -123,28 +123,17 @@ tags: [关于]
     - ui-router的使用
     - 一个用户密码泄露的bug
     - session和cookie
-    - TODO
     - 参考项目及致谢
-- [自学html+css时的日志]()
-- [我对前端工程化的理解]()
-- [拉勾网首页动画实现及封装]()
-- [模仿iOS中的表格重用，提升大量数据时网页渲染性能]()
-- [探索express中的路由实现]()
-- [探索express中的get方法]()
-- [JADE在前端渲染中的使用]()
-- [LESS模块化]()
-- [探索mongoose的连接池的实现]()
-- [CAVANS动画优化]()
-- [常用数据结构和算法的Javascript实现]()
-- [React 与 Angular]()
-- [《ng-book》读书笔记]()
-- [《Node与Express开发》读书笔记]()
-- [CMD/AMD/commonJS]()
-- [web component]()
-- [AngularJS 的作用域]()
-- [浏览器与服务器的缓存]()
-- [Fedora使用]()
-- [压测]()
+- [自学html+css时的日志](/2016/02/14/自学历程/)
+- [模仿拉勾网首页](/2016/02/20/模仿拉勾网/)
+- [探索express中的render](/2016/02/27/探索Express中的render/)
+- [JADE在前端渲染中的使用](/2016/02/22/Jade在前端渲染中的使用/)
+- [LESS模块化](/2016/02/21/LESS模块化/)
+- [探索mongoose的连接池的实现](/2016/03/04/探索Mongoose连接池的实现/)
+- [《ng-book》读书笔记](/tags/读书笔记/)
+- [《Node与Express开发》读书笔记](/tags/读书笔记/)
+- [CMD/AMD/commonJS](/2016/03/07/js的模块化/)
+- [AngularJS 的作用域](/2016/03/17/深入AngularJS作用域/)
 
 ## 书籍
 

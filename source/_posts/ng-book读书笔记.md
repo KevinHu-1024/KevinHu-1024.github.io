@@ -2,7 +2,7 @@
 title: ng-book读书笔记
 tags:
   - angularJS
-  - 学习
+  - 读书笔记
 date: 2016-02-22 20:27:04
 ---
 
