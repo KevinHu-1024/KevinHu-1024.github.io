@@ -29,17 +29,16 @@ tags: [关于]
 
 ## 技能
 
-- 熟练使用html、css、原生javascript
-- 熟练使用LESS、JADE、jQuery、Bootstrap
-- 熟悉nodejs，有项目
-- 熟悉gulp的使用
-- 熟悉前后端工作交互
-- 看过express部分源码(res模块)，有PR，有项目
-- 给拉勾网提交过bug，并被确认
-- 使用过AngularJS框架
-- Fedora-Linux用户，折腾过MacOS、CentOS
-- SublimeText、VS Code
-- 正在探索Typescript
+- 熟练使用**html**、**css**、**原生javascript**
+- 熟练使用**LESS**、**JADE**、**jQuery**、**Bootstrap**
+- 熟悉**nodejs**，有项目
+- 熟悉**gulp**的使用
+- 熟悉**前后端工作交互**
+- 看过**express部分源码**(res/render模块)，**有官方PR**，**有项目**
+- 给拉勾网**提交过bug**，并被确认
+- 使用过**AngularJS**框架
+- **Fedora-Linux**用户，折腾过MacOS、CentOS
+- **SublimeText**、**VS Code**
 - 其他
     - 来自机械专业，1年半德企自动化设计经验
     - 9年计算机硬件发烧友
