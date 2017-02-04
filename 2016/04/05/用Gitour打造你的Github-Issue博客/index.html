@@ -1,0 +1,548 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>用Gitour打造你的Github Issue博客 | Kevin&#39;s Coffee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Kevin Hu">
+    
+
+    
+    <meta name="description" content="Gitour是一个基于Github Issue的动态、可定制、带缓存的博客框架。项目正在构建中。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Gitour打造你的Github Issue博客">
+<meta property="og:url" content="http://yoursite.com/2016/04/05/用Gitour打造你的Github-Issue博客/index.html">
+<meta property="og:site_name" content="Kevin's Coffee">
+<meta property="og:description" content="Gitour是一个基于Github Issue的动态、可定制、带缓存的博客框架。项目正在构建中。">
+<meta property="og:updated_time" content="2017-02-04T02:01:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Gitour打造你的Github Issue博客">
+<meta name="twitter:description" content="Gitour是一个基于Github Issue的动态、可定制、带缓存的博客框架。项目正在构建中。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Kevin&#39;s Coffee" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/icon.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/icon.png">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/icon.png" alt="Kevin&#39;s Coffee" title="Kevin&#39;s Coffee"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Kevin&#39;s Coffee">Kevin&#39;s Coffee</a></h1>
+				<h2 class="blog-motto">虚怀若谷，人淡如梅</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首頁</a></li>
+					
+						<li><a href="/archives">所有文章</a></li>
+					
+						<li><a href="/about">關於我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/04/05/用Gitour打造你的Github-Issue博客/" title="用Gitour打造你的Github Issue博客" itemprop="url">用Gitour打造你的Github Issue博客</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Kevin Hu" target="_blank" itemprop="author">Kevin Hu</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-05T13:42:49.000Z" itemprop="datePublished"> 发表于 2016-04-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>Gitour&#x662F;&#x4E00;&#x4E2A;&#x57FA;&#x4E8E;Github Issue&#x7684;&#x52A8;&#x6001;&#x3001;&#x53EF;&#x5B9A;&#x5236;&#x3001;&#x5E26;&#x7F13;&#x5B58;&#x7684;&#x535A;&#x5BA2;&#x6846;&#x67B6;&#x3002;&#x9879;&#x76EE;&#x6B63;&#x5728;&#x6784;&#x5EFA;&#x4E2D;&#x3002;</p>
+<a id="more"></a>
+<p>&#x73B0;&#x5728;&#x7528;Github Issue&#x505A;&#x535A;&#x5BA2;&#x7684;&#x4EBA;&#x8D8A;&#x6765;&#x8D8A;&#x591A;&#xFF0C;&#x5F88;&#x591A;&#x5927;&#x725B;&#x90FD;&#x5F00;&#x59CB;&#x7528;&#x5B83;&#x6765;&#x5199;&#x535A;&#x5BA2;&#x4E86;&#xFF0C;&#x6BD4;&#x5982;&#x6DD8;&#x5B9D;&#x7684;&#x7389;&#x4F2F;&#x7B49;&#x3002;&#x5B83;&#x7684;&#x6709;&#x70B9;&#x4E3B;&#x8981;&#x6709;&#xFF1A;</p>
+<ol>
+<li>&#x7B80;&#x5355;&#x3002;&#x4E0D;&#x7528;&#x8D39;&#x4E8B;&#x53BB;&#x914D;&#x7F6E;&#x73AF;&#x5883;&#xFF0C;&#x7F51;&#x7AD9;&#x4E0A;&#x5199;&#xFF0C;&#x7F51;&#x7AD9;&#x4E0A;&#x5F97;</li>
+<li>&#x9760;&#x8C31;&#x3002;&#x9760;&#x8C31;&#x7684;GFM&#x751F;&#x6210;&#x3001;&#x9760;&#x8C31;&#x7684;Watch&#x8BA2;&#x9605;&#x3001;&#x9760;&#x8C31;&#x7684;&#x793E;&#x533A;&#x56DE;&#x590D;</li>
+<li>&#x7EAF;&#x7CB9;&#x3002;&#x4E13;&#x6CE8;&#x5185;&#x5BB9;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x5F62;&#x5F0F;</li>
+</ol>
+<p>&#x5F53;&#x7136;&#xFF0C;&#x4ED6;&#x4E5F;&#x6709;&#x7F3A;&#x70B9;&#xFF1A;</p>
+<ol>
+<li>&#x522B;&#x626D;&#x3002;&#x600E;&#x4E48;&#x770B;&#x90FD;&#x4E0D;&#x50CF;&#x662F;&#x4E00;&#x4E2A;&#x535A;&#x5BA2;&#x7684;&#x754C;&#x9762;</li>
+<li>&#x7D20;&#x98DF;&#x3002;&#x6CA1;&#x6709;&#x4E2A;&#x6027;&#xFF0C;&#x7279;&#x522B;&#x662F;&#x60F3;&#x501F;&#x535A;&#x5BA2;&#x6765;&#x5C55;&#x793A;demo&#x7684;&#x4EBA;</li>
+<li>&#x8BBF;&#x95EE;&#x3002;&#x4ECE;&#x5916;&#x754C;&#x8BBF;&#x95EE;&#x65F6;&#x7684;&#x57DF;&#x540D;&#x603B;&#x5F52;&#x662F;&#x4E2A;&#x95EE;&#x9898;</li>
+<li>&#x6D6A;&#x8D39;&#x3002;&#x6211;&#x53EA;&#x662F;&#x4E2A;&#x4EE3;&#x7801;&#x6258;&#x7BA1;&#x7F51;&#x7AD9;&#x554A;&#xFF0C;&#x90A3;&#x4E48;&#x591A;PV&#x53EA;&#x662F;&#x6765;&#x770B;&#x535A;&#x5BA2;&#x7684;&#xFF1F;</li>
+</ol>
+<p><strong>&#x4E8E;&#x662F;&#xFF0C;&#x6211;&#x4EEC;&#x60F3;&#x9020;&#x4E2A;Gitour&#x3002;</strong></p>
+<p>Gitour&#x662F;&#x4E00;&#x4E2A;&#x57FA;&#x4E8E;Github Issue&#x7684;&#x52A8;&#x6001;&#x3001;&#x53EF;&#x5B9A;&#x5236;&#x3001;&#x5E26;&#x7F13;&#x5B58;&#x7684;&#x535A;&#x5BA2;&#x6846;&#x67B6;&#xFF0C;&#x800C;&#x539F;&#x751F;&#x7684;Github Issue&#x5C31;&#x662F;&#x4F60;&#x7684;CMS&#xFF0C;&#x4ECE;&#x6B64;&#x4F60;&#x4E0D;&#x5FC5;<code>markdown</code> -&gt; <code>generate</code> -&gt; <code>deploy</code> -&gt; <code>backup</code>&#x4E86;&#x3002;&#x4F60;&#x53EA;&#x9700;&#x8981;&#x5728;Issue&#x4E0A;&#x5199;&#x597D;&#xFF0C;&#x7B49;&#x7740;Gitour&#x6765;&#x81EA;&#x52A8;&#x6293;&#x53D6;&#x5185;&#x5BB9;&#x3001;&#x8BC4;&#x8BBA;&#x3001;&#x5206;&#x7EC4;&#x3001;&#x751F;&#x6210;&#x9875;&#x9762;&#x5C31;&#x53EF;&#x4EE5;&#x4E86;&#x3002;&#x5982;&#x679C;&#x4F60;&#x7684;&#x535A;&#x5BA2;&#x5F88;&#x706B;&#xFF0C;&#x4E5F;&#x4E0D;&#x5FC5;&#x62C5;&#x5FC3;&#x9053;&#x5FB7;&#x98CE;&#x9669;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x5C06;&#x5229;&#x7528;&#x7F13;&#x5B58;&#x5C3D;&#x53EF;&#x80FD;&#x7684;&#x51CF;&#x5C11;&#x5927;&#x91CF;&#x8BBF;&#x95EE;&#x5BF9;Github API&#x7684;&#x8BBF;&#x95EE;&#x91CF;&#x3002;</p>
+<p><strong>&#x4E2A;&#x6027;&#xFF1A;</strong> &#x6211;&#x4EEC;&#x5C06;&#x6709;&#x4E00;&#x4E2A;&#x57FA;&#x7840;&#x7684;&#x4E3B;&#x9898;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x613F;&#x610F;&#xFF0C;&#x6B22;&#x8FCE;&#x63D0;&#x4F9B;&#x7B2C;&#x4E09;&#x65B9;&#x4E3B;&#x9898;&#x3002;</p>
+<p><strong>&#x7EAF;&#x51C0;&#xFF1A;</strong> &#x6211;&#x4EEC;&#x5C06;&#x4E0D;&#x518D;&#x4F7F;&#x7528;&#x7B2C;&#x4E09;&#x65B9;&#x793E;&#x533A;&#x8BC4;&#x8BBA;&#x63D2;&#x4EF6;&#xFF0C;&#x9632;&#x6B62;&#x535A;&#x5BA2;&#x5206;&#x6D41;&#xFF0C;&#x4FDD;&#x8BC1;&#x793E;&#x533A;&#x7EAF;&#x7CB9;&#x3002;</p>
+<p><strong>&#x7B80;&#x5355;&#xFF1A;</strong> &#x6211;&#x4EEC;&#x5C06;&#x5C3D;&#x53EF;&#x80FD;&#x7684;&#x4FDD;&#x8BC1;&#x5B83;&#x7684;&#x8F7B;&#x91CF;&#x3001;&#x7B80;&#x5355;&#xFF0C;&#x4F60;&#x53EA;&#x9700;&#x8981;&#x5728;&#x4F60;&#x7684;&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x542F;&#x52A8;&#x5B83;&#xFF0C;&#x5269;&#x4E0B;&#x7684;&#x4E8B;&#x513F;&#x4F60;&#x5C31;&#x4E0D;&#x7528;&#x7BA1;&#x4E86;&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x5C06;&#x91C7;&#x7528;<code>Nodejs</code> + <code>React</code> + *&#x6765;&#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#x3002;</p>
+<p>&#x8FD9;&#x4E2A;&#x9879;&#x76EE;&#x521A;&#x521A;&#x5F00;&#x59CB;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x60F3;&#x6210;&#x4E3A;contributor&#x4E4B;&#x4E00;&#xFF0C;&#x6B22;&#x8FCE;<a href="https://github.com/KevinHu-1024" target="_blank" rel="external">&#x5173;&#x6CE8;&#x6211;</a>&#x3002;</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/gitour/">gitour</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/04/05/用Gitour打造你的Github-Issue博客/" data-title="用Gitour打造你的Github Issue博客 | Kevin&#39;s Coffee" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/04/01/单片机、iOS和js的思想类比/"  title="单片机、iOS、js等编程思想类比">
+ <strong>下一篇：</strong><br/> 
+ <span>单片机、iOS、js等编程思想类比
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="KevinHu-1024" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/全栈/" title="全栈">全栈<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/agui/" title="agui">agui<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/项目总结/" title="项目总结">项目总结<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angular/" title="angular">angular<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nodejs/" title="nodejs">nodejs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/前端工程化/" title="前端工程化">前端工程化<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularJS/" title="angularJS">angularJS<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/模块化/" title="模块化">模块化<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/读书笔记/" title="读书笔记">读书笔记<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jade/" title="jade">jade<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/前端渲染/" title="前端渲染">前端渲染<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/less/" title="less">less<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AMD/" title="AMD">AMD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/requirejs/" title="requirejs">requirejs<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CMD/" title="CMD">CMD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/seajs/" title="seajs">seajs<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/commonJS/" title="commonJS">commonJS<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/browserify/" title="browserify">browserify<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gulp/" title="gulp">gulp<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 折腾即生命 <br/>
+			Keep the curiosity to the world, forever.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/KevinHu-1024" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/4244468" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/kevinhu-1024" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:kevinhu.1024@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Kevin Hu">Kevin Hu</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?325a9a8c3667dacc6d30156da64f6f51";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

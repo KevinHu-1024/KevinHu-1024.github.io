@@ -1,0 +1,697 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>（转）深入AngularJS作用域 | Kevin&#39;s Coffee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Kevin Hu">
+    
+
+    
+    <meta name="description" content="2013年8月2日， 严清 译
+概叙：
+AngularJS中，子作用域一般都会通过JavaScript原型继承机制继承其父作用域的属性和方法。但有一个例外：在directive中使用scope: { ... }，这种方式创建的作用域是一个独立的&amp;quot;Isolate&amp;quot;作用域，它也有父作用域，但父作用域不在其原型链上，不会对父作用域进行原型继承。这种方式定义作用域通常用于构造可复用的d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="（转）深入AngularJS作用域">
+<meta property="og:url" content="http://yoursite.com/2016/03/17/深入AngularJS作用域/index.html">
+<meta property="og:site_name" content="Kevin's Coffee">
+<meta property="og:description" content="2013年8月2日， 严清 译
+概叙：
+AngularJS中，子作用域一般都会通过JavaScript原型继承机制继承其父作用域的属性和方法。但有一个例外：在directive中使用scope: { ... }，这种方式创建的作用域是一个独立的&amp;quot;Isolate&amp;quot;作用域，它也有父作用域，但父作用域不在其原型链上，不会对父作用域进行原型继承。这种方式定义作用域通常用于构造可复用的d">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/1.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/2.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/3.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/4.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/5.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/6.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/7.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/8.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/9.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/10.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/11.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/12.png">
+<meta property="og:image" content="http://yoursite.com/images/ngscope/13.png">
+<meta property="og:updated_time" content="2017-02-04T02:01:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="（转）深入AngularJS作用域">
+<meta name="twitter:description" content="2013年8月2日， 严清 译
+概叙：
+AngularJS中，子作用域一般都会通过JavaScript原型继承机制继承其父作用域的属性和方法。但有一个例外：在directive中使用scope: { ... }，这种方式创建的作用域是一个独立的&amp;quot;Isolate&amp;quot;作用域，它也有父作用域，但父作用域不在其原型链上，不会对父作用域进行原型继承。这种方式定义作用域通常用于构造可复用的d">
+<meta name="twitter:image" content="http://yoursite.com/images/ngscope/1.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Kevin&#39;s Coffee" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/icon.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/icon.png">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/icon.png" alt="Kevin&#39;s Coffee" title="Kevin&#39;s Coffee"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Kevin&#39;s Coffee">Kevin&#39;s Coffee</a></h1>
+				<h2 class="blog-motto">虚怀若谷，人淡如梅</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首頁</a></li>
+					
+						<li><a href="/archives">所有文章</a></li>
+					
+						<li><a href="/about">關於我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/17/深入AngularJS作用域/" title="（转）深入AngularJS作用域" itemprop="url">（转）深入AngularJS作用域</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Kevin Hu" target="_blank" itemprop="author">Kevin Hu</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-17T09:29:51.000Z" itemprop="datePublished"> 发表于 2016-03-17</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概叙"><span class="toc-number">1.</span> <span class="toc-text">概叙：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript-原型继承机制"><span class="toc-number">2.</span> <span class="toc-text">JavaScript 原型继承机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#angularjs-作用域scope的继承"><span class="toc-number">3.</span> <span class="toc-text">AngularJS 作用域Scope的继承</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-include"><span class="toc-number">3.1.</span> <span class="toc-text">ng-include</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-switch"><span class="toc-number">3.2.</span> <span class="toc-text">ng-switch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-view"><span class="toc-number">3.3.</span> <span class="toc-text">ng-view</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-repeat"><span class="toc-number">3.4.</span> <span class="toc-text">ng-repeat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-controller"><span class="toc-number">3.5.</span> <span class="toc-text">ng-controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#directives"><span class="toc-number">3.6.</span> <span class="toc-text">directives</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		
+		<p>2013&#x5E74;8&#x6708;2&#x65E5;&#xFF0C; <a href="https://github.com/zensh" target="_blank" rel="external">&#x4E25;&#x6E05;</a> &#x8BD1;</p>
+<h2 id="&#x6982;&#x53D9;">&#x6982;&#x53D9;&#xFF1A;</h2>
+<p>AngularJS&#x4E2D;&#xFF0C;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E00;&#x822C;&#x90FD;&#x4F1A;&#x901A;&#x8FC7;JavaScript&#x539F;&#x578B;&#x7EE7;&#x627F;&#x673A;&#x5236;&#x7EE7;&#x627F;&#x5176;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#x548C;&#x65B9;&#x6CD5;&#x3002;&#x4F46;&#x6709;&#x4E00;&#x4E2A;&#x4F8B;&#x5916;&#xFF1A;&#x5728;directive&#x4E2D;&#x4F7F;&#x7528;<code>scope: { ... }</code>&#xFF0C;&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x521B;&#x5EFA;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x662F;&#x4E00;&#x4E2A;&#x72EC;&#x7ACB;&#x7684;&quot;Isolate&quot;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x5B83;&#x4E5F;&#x6709;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x4F46;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x4E0D;&#x5728;&#x5176;&#x539F;&#x578B;&#x94FE;&#x4E0A;&#xFF0C;&#x4E0D;&#x4F1A;&#x5BF9;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x3002;&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x5B9A;&#x4E49;&#x4F5C;&#x7528;&#x57DF;&#x901A;&#x5E38;&#x7528;&#x4E8E;&#x6784;&#x9020;&#x53EF;&#x590D;&#x7528;&#x7684;directive&#x7EC4;&#x4EF6;&#x3002;</p>
+<a id="more"></a>
+<p>&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x662F;&#x975E;&#x5E38;&#x7B80;&#x5355;&#x666E;&#x904D;&#x7684;&#xFF0C;&#x751A;&#x81F3;&#x4F60;&#x4E0D;&#x5FC5;&#x5173;&#x5FC3;&#x5B83;&#x7684;&#x8FD0;&#x4F5C;&#x3002;&#x76F4;&#x5230;&#x4F60;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x5411;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x539F;&#x59CB;&#x7C7B;&#x578B;&#x5C5E;&#x6027;&#x4F7F;&#x7528;&#x53CC;&#x5411;&#x6570;&#x636E;&#x7ED1;&#x5B9A;2-way data binding&#xFF0C;&#x6BD4;&#x5982;Form&#x8868;&#x5355;&#x7684;<code>ng-model</code>&#x4E3A;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x4E14;&#x4E3A;&#x539F;&#x59CB;&#x7C7B;&#x578B;&#xFF0C;&#x8F93;&#x5165;&#x6570;&#x636E;&#x540E;&#xFF0C;&#x5B83;&#x4E0D;&#x4F1A;&#x5982;&#x4F60;&#x671F;&#x671B;&#x7684;&#x90A3;&#x6837;&#x8FD0;&#x884C;&#x2014;&#x2014;AngularJS&#x4E0D;&#x4F1A;&#x628A;&#x8F93;&#x5165;&#x6570;&#x636E;&#x5199;&#x5230;&#x4F60;&#x671F;&#x671B;&#x7684;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x5C5E;&#x6027;&#x4E2D;&#x53BB;&#xFF0C;&#x800C;&#x662F;&#x76F4;&#x63A5;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x521B;&#x5EFA;&#x540C;&#x540D;&#x5C5E;&#x6027;&#x5E76;&#x5199;&#x5165;&#x6570;&#x636E;&#x3002;&#x8FD9;&#x4E2A;&#x884C;&#x4E3A;&#x7B26;&#x5408;JavaScript&#x539F;&#x578B;&#x7EE7;&#x627F;&#x673A;&#x5236;&#x7684;&#x884C;&#x4E3A;&#x3002;AngularJS&#x65B0;&#x624B;&#x901A;&#x5E38;&#x6CA1;&#x6709;&#x8BA4;&#x8BC6;&#x5230;<code>ng-repeat</code>&#x3001; <code>ng-switch</code>&#x3001;<code>ng-view</code>&#x548C;<code>ng-include</code> &#x90FD;&#x4F1A;&#x521B;&#x5EFA;&#x5B50;&#x4F5C;&#x7528;&#x57DF;, &#x6240;&#x4EE5;&#x7ECF;&#x5E38;&#x51FA;&#x95EE;&#x9898;&#x3002; (&#x89C1; <a href="http://plnkr.co/edit/zZfUQN?p=preview" target="_blank" rel="external">&#x793A;&#x4F8B;</a>)</p>
+<p>&#x907F;&#x514D;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#x7684;&#x6700;&#x4F73;&#x5B9E;&#x8DF5;&#x662F;&#x5728;ng-model&#x4E2D;&#x603B;&#x4F7F;&#x7528;.&#xFF0C;&#x53C2;&#x89C1;&#x6587;&#x7AE0; <a href="http://www.youtube.com/watch?v=ZhfUv0spHCY&amp;feature=youtu.be&amp;t=30m" target="_blank" rel="external">always have a &apos;.&apos; in your ng-models</a>&#x3002;</p>
+<p>&#x6BD4;&#x5982;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;input type=<span class="string">&quot;text&quot;</span> ng-model=<span class="string">&quot;someObj.prop1&quot;</span>&gt;</div></pre></td></tr></table></figure>
+<p>&#x4F18;&#x4E8E;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;input type=<span class="string">&quot;text&quot;</span> ng-model=<span class="string">&quot;prop1&quot;</span>&gt;</div></pre></td></tr></table></figure>
+<p>&#x5982;&#x679C;&#x4F60;&#x4E00;&#x5B9A;&#x8981;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x539F;&#x59CB;&#x7C7B;&#x578B;&#xFF0C;&#x8981;&#x6CE8;&#x610F;&#x4E24;&#x70B9;&#xFF1A;</p>
+<ol>
+<li>&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x4F7F;&#x7528; $parent.parentScopeProperty&#xFF0C;&#x8FD9;&#x6837;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x4FEE;&#x6539;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#x3002;</li>
+<li>&#x5728;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#xFF0C;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x901A;&#x8FC7;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x8C03;&#x7528;&#x51FD;&#x6570;&#x628A;&#x503C;&#x4F20;&#x9012;&#x7ED9;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#xFF08;&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x6781;&#x5C11;&#x4F7F;&#x7528;&#xFF09;&#x3002;</li>
+</ol>
+<h2 id="javascript-&#x539F;&#x578B;&#x7EE7;&#x627F;&#x673A;&#x5236;">JavaScript &#x539F;&#x578B;&#x7EE7;&#x627F;&#x673A;&#x5236;</h2>
+<p>&#x4F60;&#x5FC5;&#x987B;&#x5B8C;&#x5168;&#x7406;&#x89E3;JavaScript&#x7684;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x673A;&#x5236;&#xFF0C;&#x5C24;&#x5176;&#x662F;&#x5F53;&#x4F60;&#x6709;&#x540E;&#x7AEF;&#x5F00;&#x53D1;&#x80CC;&#x666F;&#x548C;&#x7C7B;&#x7EE7;&#x627F;&#x7ECF;&#x9A8C;&#x7684;&#x65F6;&#x5019;&#x3002;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x5148;&#x6765;&#x56DE;&#x987E;&#x4E00;&#x4E0B;&#x539F;&#x578B;&#x7EE7;&#x627F;&#xFF1A;</p>
+<p>&#x5047;&#x8BBE;&#x7236;&#x4F5C;&#x7528;&#x57DF;<code>parentScope</code>&#x62E5;&#x6709;&#x4EE5;&#x4E0B;&#x5C5E;&#x6027;&#x548C;&#x65B9;&#x6CD5;&#xFF1A;<code>aString</code>&#x3001;<code>aNumber</code>&#x3001;<code>anArray</code>&#x3001;<code>anObject</code>&#x3001;<code>aFunction</code>&#x3002;&#x5B50;&#x4F5C;&#x7528;&#x57DF;<code>childScope</code>&#x5982;&#x679C;&#x4ECE;&#x7236;&#x4F5C;&#x7528;&#x57DF;<code>parentScope</code>&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x770B;&#x5230;&#xFF1A;</p>
+<p><img src="/images/ngscope/1.png" alt=""></p>
+<p>(&#x6CE8;&#xFF1A;&#x4E3A;&#x8282;&#x7EA6;&#x7A7A;&#x95F4;&#xFF0C;anArray&#x4F7F;&#x7528;&#x4E86;&#x84DD;&#x8272;&#x65B9;&#x5757;&#x56FE;)</p>
+<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x8BBF;&#x95EE;&#x4E00;&#x4E2A;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x5C5E;&#x6027;&#xFF0C;JavaScript&#x9996;&#x5148;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x5BFB;&#x627E;&#x8BE5;&#x5C5E;&#x6027;&#xFF0C;&#x6CA1;&#x627E;&#x5230;&#x518D;&#x4ECE;&#x539F;&#x578B;&#x94FE;&#x4E0A;&#x7684;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x5BFB;&#x627E;&#xFF0C;&#x5982;&#x679C;&#x8FD8;&#x6CA1;&#x627E;&#x5230;&#x4F1A;&#x518D;&#x5F80;&#x4E0A;&#x4E00;&#x7EA7;&#x539F;&#x578B;&#x94FE;&#x7684;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x5BFB;&#x627E;&#x3002;&#x5728;AngularJS&#x4E2D;&#xFF0C;&#x4F5C;&#x7528;&#x57DF;&#x539F;&#x578B;&#x94FE;&#x7684;&#x9876;&#x7AEF;&#x662F;<code>$rootScope</code>&#xFF0C;JavaScript&#x5BFB;&#x627E;&#x5230;<code>$rootScope</code>&#x4E3A;&#x6B62;&#x3002;&#x6240;&#x4EE5;&#xFF0C;&#x4EE5;&#x4E0B;&#x8868;&#x8FBE;&#x5F0F;&#x5747;&#x4E3A;<code>true</code>&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">childScope.aString === <span class="string">&apos;parent string&apos;</span></div><div class="line">childScope.anArray[<span class="number">1</span>] === <span class="number">20</span></div><div class="line">childScope.anObject.property1 === <span class="string">&apos;parent prop1&apos;</span></div><div class="line">childScope.aFunction() === <span class="string">&apos;parent output&apos;</span></div></pre></td></tr></table></figure>
+<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x8FDB;&#x884C;&#x5982;&#x4E0B;&#x64CD;&#x4F5C;:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">childScope.aString = <span class="string">&apos;child string&apos;</span></div></pre></td></tr></table></figure>
+<p>&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x8D4B;&#x503C;&#x76EE;&#x6807;&#x662F;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x539F;&#x578B;&#x94FE;&#x5C06;&#x4E0D;&#x4F1A;&#x88AB;&#x67E5;&#x8BE2;&#xFF0C;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x4E0E;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x5C5E;&#x6027;&#x540C;&#x540D;&#x7684;&#x5C5E;&#x6027;<code>aString</code>&#x5C06;&#x88AB;&#x6DFB;&#x52A0;&#x5230;&#x5F53;&#x524D;&#x7684;&#x5B50;&#x4F5C;&#x7528;&#x57DF;<code>childScope</code>&#x4E2D;&#x3002;</p>
+<p><img src="/images/ngscope/2.png" alt=""></p>
+<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x8FDB;&#x884C;&#x5982;&#x4E0B;&#x64CD;&#x4F5C;:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">childScope.anArray[<span class="number">1</span>] = <span class="string">&apos;22&apos;</span></div><div class="line">childScope.anObject.property1 = <span class="string">&apos;child prop1&apos;</span></div></pre></td></tr></table></figure>
+<p>&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x7684;&#x8D4B;&#x503C;&#x76EE;&#x6807;&#x662F;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x5C5E;&#x6027;anArray&#x548C;anObject&#x7684;&#x5B50;&#x5C5E;&#x6027;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;JavaScript&#x5FC5;&#x987B;&#x5148;&#x8981;&#x5148;&#x5BFB;&#x627E;anArray&#x548C;anObject&#x8FD9;&#x4E24;&#x4E2A;&#x5BF9;&#x8C61;&#x2014;&#x2014;&#x5B83;&#x4EEC;&#x5FC5;&#x987B;&#x4E3A;&#x5BF9;&#x8C61;&#xFF0C;&#x5426;&#x5219;&#x4E0D;&#x80FD;&#x5199;&#x5165;&#x5C5E;&#x6027;&#xFF0C;&#x800C;&#x8FD9;&#x4E24;&#x4E2A;&#x5BF9;&#x8C61;&#x4E0D;&#x5728;&#x5F53;&#x524D;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x539F;&#x578B;&#x94FE;&#x5C06;&#x88AB;&#x67E5;&#x8BE2;&#xFF0C;&#x5728;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x627E;&#x5230;&#x8FD9;&#x4E24;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C; &#x7136;&#x540E;&#x5BF9;&#x8FD9;&#x4E24;&#x4E2A;&#x5BF9;&#x8C61;&#x7684;&#x5C5E;&#x6027;[1]&#x548C;property1&#x8FDB;&#x884C;&#x8D4B;&#x503C;&#x64CD;&#x4F5C;&#x3002;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x4E0D;&#x4F1A;&#x4E0D;&#x4F1A;&#x521B;&#x5EFA;&#x4E24;&#x4E2A;&#x65B0;&#x7684;&#x540C;&#x540D;&#x5C5E;&#x6027;&#xFF01;&#xFF08;&#x6CE8;&#x610F;JavaScript&#x4E2D;&#x6570;&#x7EC4;&#x548C;&#x51FD;&#x6570;&#x5747;&#x662F;&#x5BF9;&#x8C61;&#x2014;&#x2014;&#x5F15;&#x7528;&#x7C7B;&#x578B;&#xFF09;</p>
+<p><img src="/images/ngscope/3.png" alt=""></p>
+<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x8FDB;&#x884C;&#x5982;&#x4E0B;&#x64CD;&#x4F5C;:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">childScope.anArray = [<span class="number">100</span>, <span class="number">555</span>]</div><div class="line">childScope.anObject = { <span class="attr">name</span>: <span class="string">&apos;Mark&apos;</span>, <span class="attr">country</span>: <span class="string">&apos;USA&apos;</span> }</div></pre></td></tr></table></figure>
+<p>&#x540C;&#x6837;&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x8D4B;&#x503C;&#x76EE;&#x6807;&#x662F;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x539F;&#x578B;&#x94FE;&#x5C06;&#x4E0D;&#x4F1A;&#x88AB;&#x67E5;&#x8BE2;&#xFF0C;&#xFF0C;JavaScript&#x4F1A;&#x76F4;&#x63A5;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x521B;&#x5EFA;&#x4E24;&#x4E2A;&#x540C;&#x540D;&#x5C5E;&#x6027;&#xFF0C;&#x5176;&#x503C;&#x5206;&#x522B;&#x4E3A;&#x6570;&#x7EC4;&#x548C;&#x5BF9;&#x8C61;&#x3002;</p>
+<p><img src="/images/ngscope/4.png" alt=""></p>
+<p>&#x8981;&#x70B9;:</p>
+<ul>
+<li>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x8BFB;&#x53D6;childScope.propertyX&#xFF0C;&#x5E76;&#x4E14;childScope&#x5B58;&#x5728;propertyX&#xFF0C;&#x539F;&#x578B;&#x94FE;&#x4E0D;&#x4F1A;&#x88AB;&#x67E5;&#x8BE2;&#xFF1B;</li>
+<li>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x5199;&#x5165;childScope.propertyX, &#x539F;&#x578B;&#x94FE;&#x4E5F;&#x4E0D;&#x4F1A;&#x88AB;&#x67E5;&#x8BE2;&#xFF1B;</li>
+<li>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x5199;&#x5165;childScope.propertyX.subPropertyY, &#x5E76;&#x4E14;childScope&#x4E0D;&#x5B58;&#x5728;propertyX&#xFF0C;&#x539F;&#x578B;&#x94FE;&#x5C06;&#x88AB;&#x67E5;&#x8BE2;&#x2014;&#x2014;&#x67E5;&#x627E;propertyX&#x3002;</li>
+</ul>
+<p>&#x6700;&#x540E;&#x4E00;&#x70B9;:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">delete</span> childScope.anArray</div><div class="line">childScope.anArray[<span class="number">1</span>] === <span class="number">22</span>  <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x5148;&#x5220;&#x9664;&#x4E86;&#x5B50;&#x4F5C;&#x7528;&#x57DF;childScope&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x7136;&#x540E;&#x518D;&#x8BFB;&#x53D6;&#x8BE5;&#x5C5E;&#x6027;&#xFF0C;&#x56E0;&#x4E3A;&#x627E;&#x4E0D;&#x5230;&#x8BE5;&#x5C5E;&#x6027;&#xFF0C;&#x539F;&#x578B;&#x94FE;&#x5C06;&#x88AB;&#x67E5;&#x8BE2;&#x3002;</p>
+<p><img src="/images/ngscope/5.png" alt=""></p>
+<h2 id="angularjs-&#x4F5C;&#x7528;&#x57DF;scope&#x7684;&#x7EE7;&#x627F;">AngularJS &#x4F5C;&#x7528;&#x57DF;Scope&#x7684;&#x7EE7;&#x627F;</h2>
+<p><strong>&#x63D0;&#x793A;:</strong></p>
+<ul>
+<li>&#x4EE5;&#x4E0B;&#x65B9;&#x5F0F;&#x4F1A;&#x521B;&#x5EFA;&#x65B0;&#x7684;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x5E76;&#x4E14;&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#xFF1A; <code>ng-repeat</code>&#x3001;<code>ng-include</code>&#x3001;<code>ng-switch</code>&#x3001;<code>ng-view</code>&#x3001;<code>ng-controller</code>, &#x7528;<code>scope: true</code>&#x548C;<code>transclude: true</code>&#x521B;&#x5EFA;directive&#x3002;</li>
+<li>&#x4EE5;&#x4E0B;&#x65B9;&#x5F0F;&#x4F1A;&#x521B;&#x5EFA;&#x65B0;&#x7684;&#x72EC;&#x7ACB;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x4E0D;&#x4F1A;&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#xFF1A;&#x7528;<code>scope: { ... }</code>&#x521B;&#x5EFA;directive&#x3002;&#x8FD9;&#x6837;&#x521B;&#x5EFA;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x88AB;&#x79F0;&#x4E3A;&quot;Isolate&quot;&#x4F5C;&#x7528;&#x57DF;&#x3002;</li>
+</ul>
+<p><strong>&#x6CE8;&#x610F;&#xFF1A;</strong> &#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B;&#x521B;&#x5EFA;directive&#x4F7F;&#x7528;&#x4E86;<code>scope: false</code>&#xFF0C;&#x4E0D;&#x4F1A;&#x521B;&#x5EFA;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x3002;</p>
+<p>&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x5373;&#x610F;&#x5473;&#x7740;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x539F;&#x578B;&#x94FE;&#x4E0A;&#xFF0C;&#x8FD9;&#x662F;JavaScript&#x7684;&#x7279;&#x6027;&#x3002;AngularJS&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x8FD8;&#x5B58;&#x5728;&#x5982;&#x4E0B;&#x5185;&#x90E8;&#x5B9A;&#x4E49;&#x7684;&#x5173;&#x7CFB;&#xFF1A;</p>
+<ul>
+<li><code>scope.$parent</code>&#x6307;&#x5411;<code>scope</code>&#x7684;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#xFF1B;</li>
+<li><code>scope.$$childHead</code>&#x6307;&#x5411;<code>scope</code>&#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF1B;</li>
+<li><code>scope.$$childTail</code>&#x6307;&#x5411;<code>scope</code>&#x7684;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF1B;</li>
+<li><code>scope.$$nextSibling</code>&#x6307;&#x5411;<code>scope</code>&#x7684;&#x4E0B;&#x4E00;&#x4E2A;&#x76F8;&#x90BB;&#x4F5C;&#x7528;&#x57DF;&#xFF1B;</li>
+<li><code>scope.$$prevSibling</code>&#x6307;&#x5411;<code>scope</code>&#x7684;&#x4E0A;&#x4E00;&#x4E2A;&#x76F8;&#x90BB;&#x4F5C;&#x7528;&#x57DF;&#xFF1B;</li>
+</ul>
+<p>&#x8FD9;&#x4E9B;&#x5173;&#x7CFB;&#x7528;&#x4E8E;AngularJS&#x5185;&#x90E8;&#x5386;&#x904D;&#xFF0C;&#x5982;<code>$broadcast</code>&#x548C;<code>$emit</code>&#x4E8B;&#x4EF6;&#x5E7F;&#x64AD;&#xFF0C;<code>$digest</code>&#x5904;&#x7406;&#x7B49;&#x3002;</p>
+<h3 id="ng-include">ng-include</h3>
+<p>In controller:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$scope.myPrimitive = <span class="number">50</span>;</div><div class="line">$scope.myObject    = {<span class="attr">aNumber</span>: <span class="number">11</span>};</div></pre></td></tr></table></figure>
+<p>In HTML:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">&quot;text/ng-template&quot;</span> id=<span class="string">&quot;/tpl1.html&quot;</span>&gt;</div><div class="line">    &lt;input ng-model=&quot;myPrimitive&quot;&gt;</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;div ng-include src=<span class="string">&quot;&apos;/tpl1.html&apos;&quot;</span>&gt;&lt;/div&gt;</div><div class="line"></div><div class="line">&lt;script type=<span class="string">&quot;text/ng-template&quot;</span> id=<span class="string">&quot;/tpl2.html&quot;</span>&gt;</div><div class="line">    &lt;input ng-model=&quot;myObject.aNumber&quot;&gt;</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;div ng-include src=<span class="string">&quot;&apos;/tpl2.html&apos;&quot;</span>&gt;&lt;/div&gt;</div></pre></td></tr></table></figure>
+<p>&#x6BCF;&#x4E00;&#x4E2A;<code>ng-include</code>&#x6307;&#x4EE4;&#x90FD;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5B50;&#x4F5C;&#x7528;&#x57DF;, &#x5E76;&#x4E14;&#x4F1A;&#x4ECE;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x3002;</p>
+<p><img src="/images/ngscope/6.png" alt=""></p>
+<p>&#x5728;&#x7B2C;&#x4E00;&#x4E2A;<code>input</code>&#x6846;&#x8F93;&#x5165;&quot;77&quot;&#x5C06;&#x4F1A;&#x5BFC;&#x81F4;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;&#x540C;&#x540D;&#x5C5E;&#x6027;&#xFF0C;&#x5176;&#x503C;&#x4E3A;77&#xFF0C;&#x8FD9;&#x4E0D;&#x662F;&#x4F60;&#x60F3;&#x8981;&#x7684;&#x7ED3;&#x679C;&#x3002;</p>
+<p><img src="/images/ngscope/7.png" alt=""></p>
+<p>&#x5728;&#x7B2C;&#x4E8C;&#x4E2A;input&#x6846;&#x8F93;&#x5165;&quot;99&quot;&#x4F1A;&#x76F4;&#x63A5;&#x4FEE;&#x6539;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;<code>myObject</code>&#x5BF9;&#x8C61;&#xFF0C;&#x8FD9;&#x5C31;&#x662F;JavaScript&#x539F;&#x578B;&#x7EE7;&#x627F;&#x673A;&#x5236;&#x7684;&#x4F5C;&#x7528;&#x3002;</p>
+<p><img src="/images/ngscope/8.png" alt=""></p>
+<p>(<strong>&#x6CE8;</strong>&#xFF1A;&#x4E0A;&#x56FE;&#x5B58;&#x5728;&#x9519;&#x8BEF;&#xFF0C;&#x7EA2;&#x8272;99&#x56E0;&#x4E3A;&#x662F;50&#xFF0C;11&#x5E94;&#x8BE5;&#x662F;99)</p>
+<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x4E0D;&#x60F3;&#x628A;model&#x7531;&#x539F;&#x59CB;&#x7C7B;&#x578B;&#x6539;&#x6210;&#x5F15;&#x7528;&#x7C7B;&#x578B;&#x2014;&#x2014;&#x5BF9;&#x8C61;&#xFF0C;&#x6211;&#x4EEC;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>$parent</code>&#x76F4;&#x63A5;&#x64CD;&#x4F5C;&#x7236;&#x4F5C;&#x7528;&#x57DF;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;input ng-model=<span class="string">&quot;$parent.myPrimitive&quot;</span>&gt;</div></pre></td></tr></table></figure>
+<p>&#x8F93;&#x5165;&quot;22&quot;&#x6211;&#x4EEC;&#x5F97;&#x5230;&#x4E86;&#x60F3;&#x8981;&#x7684;&#x7ED3;&#x679C;&#x3002;</p>
+<p><img src="/images/ngscope/9.png" alt=""></p>
+<p>&#x53E6;&#x4E00;&#x79CD;&#x65B9;&#x6CD5;&#x5C31;&#x662F;&#x4F7F;&#x7528;&#x51FD;&#x6570;&#xFF0C;&#x5728;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#xFF0C;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x901A;&#x8FC7;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x53EF;&#x8FD0;&#x884C;&#x8BE5;&#x51FD;&#x6570;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// in the parent scope</span></div><div class="line">$scope.setMyPrimitive = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>{</div><div class="line">    $scope.myPrimitive = value;</div><div class="line">}</div></pre></td></tr></table></figure>
+<h3 id="ng-switch">ng-switch</h3>
+<p><code>ng-switch</code>&#x4E0E;<code>ng-include</code>&#x4E00;&#x6837;&#x3002;</p>
+<h3 id="ng-view">ng-view</h3>
+<p><code>ng-view</code>&#x4E0E;<code>ng-include</code>&#x4E00;&#x6837;&#x3002;</p>
+<h3 id="ng-repeat">ng-repeat</h3>
+<p><code>ng-repeat</code>&#x4E5F;&#x521B;&#x5EFA;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x4F46;&#x6709;&#x4E9B;&#x4E0D;&#x540C;&#x3002;</p>
+<p>In controller:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$scope.myArrayOfPrimitives = [ <span class="number">11</span>, <span class="number">22</span> ];</div><div class="line">$scope.myArrayOfObjects    = [{<span class="attr">num</span>: <span class="number">101</span>}, {<span class="attr">num</span>: <span class="number">202</span>}]</div></pre></td></tr></table></figure>
+<p>In HTML:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;ul&gt;&lt;li ng-repeat=&quot;num in myArrayOfPrimitives&quot;&gt;</div><div class="line">       &lt;input ng-model=&quot;num&quot;&gt;</div><div class="line">    &lt;/li&gt;</div><div class="line">&lt;/ul&gt;</div><div class="line">&lt;ul&gt;&lt;li ng-repeat=&quot;obj in myArrayOfObjects&quot;&gt;</div><div class="line">       &lt;input ng-model=&quot;obj.num&quot;&gt;</div><div class="line">    &lt;/li&gt;</div><div class="line">&lt;/ul&gt;</div></pre></td></tr></table></figure>
+<p><code>ng-repeat</code>&#x5BF9;&#x6BCF;&#x4E00;&#x4E2A;&#x8FED;&#x4EE3;&#x9879;Item&#x90FD;&#x4F1A;&#x521B;&#x5EFA;&#x5B50;&#x4F5C;&#x7528;&#x57DF;, &#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E5F;&#x4ECE;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x3002; <strong>&#x4F46;&#x5B83;&#x8FD8;&#x662F;&#x4F1A;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x65B0;&#x5EFA;&#x540C;&#x540D;&#x5C5E;&#x6027;&#xFF0C;&#x628A;Item&#x8D4B;&#x503C;&#x7ED9;&#x5BF9;&#x5E94;&#x7684;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x540C;&#x540D;&#x5C5E;&#x6027;&#x3002;</strong> &#x4E0B;&#x9762;&#x662F;AngularJS&#x4E2D;<code>ng-repeat</code>&#x7684;&#x90E8;&#x5206;&#x6E90;&#x4EE3;&#x7801;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">childScope = scope.$<span class="keyword">new</span>(); <span class="comment">// child scope prototypically inherits from parent scope ...     </span></div><div class="line">childScope[valueIdent] = value; <span class="comment">// creates a new childScope property</span></div></pre></td></tr></table></figure>
+<p>&#x5982;&#x679C;Item&#x662F;&#x539F;&#x59CB;&#x7C7B;&#x578B;(&#x5982;myArrayOfPrimitives&#x7684;11&#x3001;22), &#x90A3;&#x4E48;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x6709;&#x4E00;&#x4E2A;&#x65B0;&#x5C5E;&#x6027;&#xFF08;&#x5982;num&#xFF09;&#xFF0C;&#x5B83;&#x662F;Item&#x7684;&#x526F;&#x672C;&#xFF08;11&#x3001;22&#xFF09;. &#x4FEE;&#x6539;&#x5B50;&#x4F5C;&#x7528;&#x57DF;num&#x7684;&#x503C;&#x5C06;&#x4E0D;&#x4F1A;&#x6539;&#x53D8;&#x7236;&#x4F5C;&#x7528;&#x57DF;myArrayOfPrimitives&#xFF0C;&#x6240;&#x4EE5;&#x5728;&#x4E0A;&#x4E00;&#x4E2A;<code>ng-repeat</code>&#xFF0C;&#x6BCF;&#x4E00;&#x4E2A;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x90FD;&#x6709;&#x4E00;&#x4E2A;num &#x5C5E;&#x6027;&#xFF0C;&#x8BE5;&#x5C5E;&#x6027;&#x4E0E;myArrayOfPrimitives&#x65E0;&#x5173;&#x8054;&#xFF1A;</p>
+<p><img src="/images/ngscope/10.png" alt=""></p>
+<p>&#x663E;&#x7136;&#x8FD9;&#x4E0D;&#x4F1A;&#x662F;&#x4F60;&#x60F3;&#x8981;&#x7684;&#x7ED3;&#x679C;&#x3002;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x7684;&#x662F;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x4FEE;&#x6539;&#x4E86;&#x503C;&#x540E;&#x53CD;&#x6620;&#x5230;myArrayOfPrimitives&#x6570;&#x7EC4;&#x3002;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x4F7F;&#x7528;&#x5F15;&#x7528;&#x7C7B;&#x578B;&#x7684;Item&#xFF0C;&#x5982;&#x4E0A;&#x9762;&#x7B2C;&#x4E8C;&#x4E2A;<code>ng-repeat</code>&#x6240;&#x793A;&#x3002;</p>
+<p>myArrayOfObjects&#x7684;&#x6BCF;&#x4E00;&#x9879;Item&#x90FD;&#x662F;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x2014;&#x2014;&#x5F15;&#x7528;&#x7C7B;&#x578B;&#xFF0C;<code>ng-repeat</code>&#x5BF9;&#x6BCF;&#x4E00;&#x4E2A;Item&#x521B;&#x5EFA;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x5E76;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x65B0;&#x5EFA;obj&#x5C5E;&#x6027;&#xFF0C;obj&#x5C5E;&#x6027;&#x5C31;&#x662F;&#x8BE5;Item&#x7684;&#x4E00;&#x4E2A;&#x5F15;&#x7528;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x526F;&#x672C;&#x3002;</p>
+<p><img src="/images/ngscope/11.png" alt=""></p>
+<p>&#x6211;&#x4EEC;&#x4FEE;&#x6539;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x7684;obj.num&#x5C31;&#x662F;&#x4FEE;&#x6539;&#x4E86;myArrayOfObjects&#x3002;&#x8FD9;&#x624D;&#x662F;&#x6211;&#x4EEC;&#x60F3;&#x8981;&#x7684;&#x7ED3;&#x679C;&#x3002;</p>
+<h3 id="ng-controller">ng-controller</h3>
+<p>&#x4F7F;&#x7528;ng-controller&#x4E0E;ng-include&#x4E00;&#x6837;&#x4E5F;&#x662F;&#x521B;&#x5EFA;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x4F1A;&#x4ECE;&#x7236;&#x7EA7;controller&#x521B;&#x5EFA;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x3002;&#x4F46;&#x662F;&#xFF0C;&#x5229;&#x7528;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x6765;&#x4F7F;&#x7236;&#x5B50;controller&#x5171;&#x4EAB;&#x6570;&#x636E;&#x662F;&#x4E00;&#x4E2A;&#x7CDF;&#x7CD5;&#x7684;&#x529E;&#x6CD5;&#x3002; <a href="http://onehungrymind.com/angularjs-sticky-notes-pt-1-architecture/" target="_blank" rel="external">&quot;it is considered bad form for two controllers to share information via $scope inheritance&quot;</a>&#xFF0C;controllers&#x4E4B;&#x95F4;&#x5E94;&#x8BE5;&#x4F7F;&#x7528; service&#x8FDB;&#x884C;&#x6570;&#x636E;&#x5171;&#x4EAB;&#x3002;</p>
+<p>(&#x5982;&#x679C;&#x4E00;&#x5B9A;&#x8981;&#x5229;&#x7528;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x6765;&#x8FDB;&#x884C;&#x7236;&#x5B50;controllers&#x4E4B;&#x95F4;&#x6570;&#x636E;&#x5171;&#x4EAB;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x3002; &#x8BF7;&#x53C2;&#x8003;&#xFF1A; <a href="http://stackoverflow.com/questions/13825419/controller-load-order-differs-when-loading-or-navigating/13843771#13843771" target="_blank" rel="external">Controller load order differs when loading or navigating)</a></p>
+<h3 id="directives">directives</h3>
+<ol>
+<li>
+<p>&#x9ED8;&#x8BA4; (<code>scope: false</code>) - directive&#x4F7F;&#x7528;&#x539F;&#x6709;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x6240;&#x4EE5;&#x4E5F;&#x4E0D;&#x5B58;&#x5728;&#x539F;&#x578B;&#x7EE7;&#x627F;&#xFF0C;&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x5F88;&#x7B80;&#x5355;&#xFF0C;&#x4F46;&#x4E5F;&#x5F88;&#x5BB9;&#x6613;&#x51FA;&#x95EE;&#x9898;&#x2014;&#x2014;&#x9664;&#x975E;&#x8BE5;directive&#x4E0E;html&#x4E0D;&#x5B58;&#x5728;&#x6570;&#x636E;&#x7ED1;&#x5B9A;&#xFF0C;&#x5426;&#x5219;&#x4E00;&#x822C;&#x60C5;&#x51B5;&#x5EFA;&#x8BAE;&#x4F7F;&#x7528;&#x7B2C;2&#x6761;&#x65B9;&#x5F0F;&#x3002;</p>
+</li>
+<li>
+<p><code>scope: true</code> - directive&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5B50;&#x4F5C;&#x7528;&#x57DF;, &#x5E76;&#x4E14;&#x4F1A;&#x4ECE;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x3002; &#x5982;&#x679C;&#x540C;&#x4E00;&#x4E2A;DOM element&#x5B58;&#x5728;&#x591A;&#x4E2A;directives&#x8981;&#x6C42;&#x521B;&#x5EFA;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x90A3;&#x4E48;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x88AB;&#x521B;&#x5EFA;&#xFF0C;directives&#x5171;&#x7528;&#x8BE5;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x3002;</p>
+</li>
+<li>
+<p><code>scope: { ... }</code> - directive&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x72EC;&#x7ACB;&#x7684;&#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x6CA1;&#x6709;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x3002;&#x8FD9;&#x662F;&#x521B;&#x5EFA;&#x53EF;&#x590D;&#x7528;directive&#x7EC4;&#x4EF6;&#x7684;&#x6700;&#x4F73;&#x9009;&#x62E9;&#x3002;&#x56E0;&#x4E3A;&#x5B83;&#x4E0D;&#x4F1A;&#x76F4;&#x63A5;&#x8BBF;&#x95EE;/&#x4FEE;&#x6539;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x4E0D;&#x4F1A;&#x4EA7;&#x751F;&#x610F;&#x5916;&#x7684;&#x526F;&#x4F5C;&#x7528;&#x3002;&#x8FD9;&#x79CD;directive&#x4E0E;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x901A;&#x4FE1;&#x6709;&#x5982;&#x4E0B;&#x56DB;&#x79CD;&#x65B9;&#x5F0F;&#xFF08;&#x66F4;&#x8BE6;&#x7EC6;&#x7684;&#x5185;&#x5BB9;&#x8BF7;&#x53C2;&#x8003;<a href="http://docs.angularjs.org/guide/directive" target="_blank" rel="external">Developer Guide</a>&#xFF09;&#xFF1A;</p>
+<ol>
+<li>
+<p>= or =attr &#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#x4E0E;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#x8FDB;&#x884C;&#x53CC;&#x5411;&#x7ED1;&#x5B9A;&#xFF0C;&#x4EFB;&#x4F55;&#x4E00;&#x65B9;&#x7684;&#x4FEE;&#x6539;&#x5747;&#x5F71;&#x54CD;&#x5230;&#x5BF9;&#x65B9;&#xFF0C;&#x8FD9;&#x662F;&#x6700;&#x5E38;&#x7528;&#x7684;&#x65B9;&#x5F0F;&#xFF1B;</p>
+</li>
+<li>
+<p>@ or @attr &#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#x4E0E;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#x8FDB;&#x884C;&#x5355;&#x5411;&#x7ED1;&#x5B9A;&#xFF0C;&#x5373;&#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x53EA;&#x80FD;&#x8BFB;&#x53D6;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x503C;&#xFF0C;&#x5E76;&#x4E14;&#x8BE5;&#x503C;&#x6C38;&#x8FDC;&#x7684;String&#x7C7B;&#x578B;&#xFF1B;</p>
+</li>
+<li>
+<p>&amp; or &amp;attr &#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x628A;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#x5305;&#x88C5;&#x6210;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x4ECE;&#x800C;&#x4EE5;&#x51FD;&#x6570;&#x7684;&#x65B9;&#x5F0F;&#x8BFB;&#x5199;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x5305;&#x88C5;&#x65B9;&#x6CD5;&#x662F;$parse&#xFF0C;&#x8BE6;&#x60C5;&#x8BF7;&#x89C1;<a href="http://docs.angularjs.org/api/ng.$parse" target="_blank" rel="external">API-$parse</a>&#xFF1B;</p>
+<p>&#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x7684;<code>__proto__</code>&#x662F;&#x4E00;&#x4E2A;&#x6807;&#x51C6;Scope object (the picture below needs to be updated to show an orange &apos;Scope&apos; object instead of an &apos;Object&apos;). &#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x7684;$parent&#x540C;&#x6837;&#x6307;&#x5411;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x3002;&#x5B83;&#x867D;&#x7136;&#x6CA1;&#x6709;&#x539F;&#x578B;&#x7EE7;&#x627F;&#xFF0C;&#x4F46;&#x5B83;&#x4ECD;&#x7136;&#x662F;&#x4E00;&#x4E2A;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x3002;</p>
+<p>&#x5982;&#x4E0B;directive&#xFF1A;</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;my-directive interpolated=<span class="string">&quot;{{parentProp1}}&quot;</span> twowayBinding=<span class="string">&quot;parentProp2&quot;</span>&gt;</div></pre></td></tr></table></figure>
+<p>scope&#xFF1A;</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scope: { <span class="attr">interpolatedProp</span>: <span class="string">&apos;@interpolated&apos;</span>, <span class="attr">twowayBindingProp</span>: <span class="string">&apos;=twowayBinding&apos;</span> }</div></pre></td></tr></table></figure>
+<p>link&#x51FD;&#x6570;&#x4E2D;&#xFF1A;</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scope.someIsolateProp = <span class="string">&quot;I&apos;m isolated&quot;</span></div></pre></td></tr></table></figure>
+<p><img src="/images/ngscope/12.png" alt=""></p>
+<p>&#x8BF7;&#x6CE8;&#x610F;&#xFF0C;&#x6211;&#x4EEC;&#x5728;link&#x51FD;&#x6570;&#x4E2D;&#x4F7F;&#x7528;<code>attrs.$observe(&apos;interpolated&apos;, function(value) { ... }</code>&#x6765;&#x76D1;&#x6D4B;@&#x5C5E;&#x6027;&#x7684;&#x53D8;&#x5316;&#x3002;</p>
+</li>
+</ol>
+</li>
+<li>
+<p><code>transclude: true</code> - directive&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;&#x201C;transcluded&#x201D;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x5E76;&#x4E14;&#x4F1A;&#x4ECE;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x8FDB;&#x884C;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x3002;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x201C;transcluded&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x4E0E;&#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x662F;&#x76F8;&#x90BB;&#x7684;&#x5173;&#x7CFB;&#xFF08;&#x5982;&#x679C;&#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x5B58;&#x5728;&#x7684;&#x8BDD;&#xFF09; -- &#x4ED6;&#x4EEC;&#x7684;<code>$parent</code>&#x5C5E;&#x6027;&#x6307;&#x5411;&#x540C;&#x4E00;&#x4E2A;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x3002;&#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x7684;<code>$$nextSibling</code>&#x6307;&#x5411;&#x201C;transcluded&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x3002;</p>
+<p><img src="/images/ngscope/13.png" alt=""></p>
+</li>
+</ol>
+<h2 id="&#x603B;&#x7ED3;">&#x603B;&#x7ED3;</h2>
+<p>AngularJS&#x5B58;&#x5728;&#x56DB;&#x79CD;&#x4F5C;&#x7528;&#x57DF;:</p>
+<ol>
+<li>&#x666E;&#x901A;&#x7684;&#x5E26;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x7684;&#x4F5C;&#x7528;&#x57DF; -- ng-include, ng-switch, ng-controller, directive with scope: true&#xFF1B;</li>
+<li>&#x666E;&#x901A;&#x7684;&#x5E26;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x7684;&#xFF0C;&#x5E76;&#x4E14;&#x6709;&#x8D4B;&#x503C;&#x884C;&#x4E3A;&#x7684;&#x4F5C;&#x7528;&#x57DF; -- ng-repeat&#xFF0C;ng-repeat&#x4E3A;&#x6BCF;&#x4E00;&#x4E2A;&#x8FED;&#x4EE3;&#x9879;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x666E;&#x901A;&#x7684;&#x6709;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x7684;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x4F46;&#x540C;&#x65F6;&#x5728;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x521B;&#x5EFA;&#x65B0;&#x5C5E;&#x6027;&#x5B58;&#x50A8;&#x8FED;&#x4EE3;&#x9879;&#xFF1B;</li>
+<li>&#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF; -- directive with scope: {...}&#xFF0C; &#x8BE5;&#x4F5C;&#x7528;&#x57DF;&#x6CA1;&#x6709;&#x539F;&#x578B;&#x7EE7;&#x627F;&#xFF0C;&#x4F46;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&apos;=&apos;, &apos;@&apos;, &#x548C; &apos;&amp;&apos;&#x4E0E;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x901A;&#x4FE1;&#x3002;</li>
+<li>&#x201C;transcluded&#x201D;&#x4F5C;&#x7528;&#x57DF; -- directive with transclude: true&#xFF0C;&#x5B83;&#x4E5F;&#x662F;&#x666E;&#x901A;&#x7684;&#x5E26;&#x539F;&#x578B;&#x7EE7;&#x627F;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x4F46;&#x5B83;&#x4E0E;&#x201C;Isolate&#x201D;&#x4F5C;&#x7528;&#x57DF;&#x662F;&#x76F8;&#x90BB;&#x7684;&#x597D;&#x57FA;&#x53CB;&#x3002;</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/angularJS/">angularJS</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/03/17/深入AngularJS作用域/" data-title="（转）深入AngularJS作用域 | Kevin&#39;s Coffee" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/04/01/单片机、iOS和js的思想类比/" title="单片机、iOS、js等编程思想类比">
+  <strong>上一篇：</strong><br/>
+  <span>
+  单片机、iOS、js等编程思想类比</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/03/17/项目总结4/"  title="全栈练手项目总结(4)——前端工程化&amp;系统设计&amp;框架的使用&amp;其他">
+ <strong>下一篇：</strong><br/> 
+ <span>全栈练手项目总结(4)——前端工程化&amp;系统设计&amp;框架的使用&amp;其他
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概叙"><span class="toc-number">1.</span> <span class="toc-text">概叙：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript-原型继承机制"><span class="toc-number">2.</span> <span class="toc-text">JavaScript 原型继承机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#angularjs-作用域scope的继承"><span class="toc-number">3.</span> <span class="toc-text">AngularJS 作用域Scope的继承</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-include"><span class="toc-number">3.1.</span> <span class="toc-text">ng-include</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-switch"><span class="toc-number">3.2.</span> <span class="toc-text">ng-switch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-view"><span class="toc-number">3.3.</span> <span class="toc-text">ng-view</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-repeat"><span class="toc-number">3.4.</span> <span class="toc-text">ng-repeat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ng-controller"><span class="toc-number">3.5.</span> <span class="toc-text">ng-controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#directives"><span class="toc-number">3.6.</span> <span class="toc-text">directives</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="KevinHu-1024" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/全栈/" title="全栈">全栈<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/agui/" title="agui">agui<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/项目总结/" title="项目总结">项目总结<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angular/" title="angular">angular<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nodejs/" title="nodejs">nodejs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/前端工程化/" title="前端工程化">前端工程化<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularJS/" title="angularJS">angularJS<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/模块化/" title="模块化">模块化<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/读书笔记/" title="读书笔记">读书笔记<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jade/" title="jade">jade<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/前端渲染/" title="前端渲染">前端渲染<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/less/" title="less">less<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AMD/" title="AMD">AMD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/requirejs/" title="requirejs">requirejs<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CMD/" title="CMD">CMD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/seajs/" title="seajs">seajs<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/commonJS/" title="commonJS">commonJS<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/browserify/" title="browserify">browserify<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gulp/" title="gulp">gulp<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 折腾即生命 <br/>
+			Keep the curiosity to the world, forever.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/KevinHu-1024" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/4244468" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/kevinhu-1024" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:kevinhu.1024@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Kevin Hu">Kevin Hu</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?325a9a8c3667dacc6d30156da64f6f51";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,621 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>js的模块化 | Kevin&#39;s Coffee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Kevin Hu">
+    
+
+    
+    <meta name="description" content="AMD&amp;#x89C4;&amp;#x8303;
+CMD&amp;#x89C4;&amp;#x8303;
+commonJS&amp;#x89C4;&amp;#x8303;
+UMD&amp;#x89C4;&amp;#x8303;
+ES6&amp;#x89C4;&amp;#x8303;
+
+
+
+
+&amp;#x5F02;&amp;#x6B65;
+&amp;#x6309;&amp;#x9700;&amp;#x52A0;&amp;#x8F7D;
+&amp;#x540C;&amp;#x6B65;
+&amp;#x5224;&amp;#x65AD;
+&amp;#x6">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js的模块化">
+<meta property="og:url" content="http://yoursite.com/2016/03/07/js的模块化/index.html">
+<meta property="og:site_name" content="Kevin's Coffee">
+<meta property="og:description" content="AMD&amp;#x89C4;&amp;#x8303;
+CMD&amp;#x89C4;&amp;#x8303;
+commonJS&amp;#x89C4;&amp;#x8303;
+UMD&amp;#x89C4;&amp;#x8303;
+ES6&amp;#x89C4;&amp;#x8303;
+
+
+
+
+&amp;#x5F02;&amp;#x6B65;
+&amp;#x6309;&amp;#x9700;&amp;#x52A0;&amp;#x8F7D;
+&amp;#x540C;&amp;#x6B65;
+&amp;#x5224;&amp;#x65AD;
+&amp;#x6">
+<meta property="og:updated_time" content="2017-02-04T02:01:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js的模块化">
+<meta name="twitter:description" content="AMD&amp;#x89C4;&amp;#x8303;
+CMD&amp;#x89C4;&amp;#x8303;
+commonJS&amp;#x89C4;&amp;#x8303;
+UMD&amp;#x89C4;&amp;#x8303;
+ES6&amp;#x89C4;&amp;#x8303;
+
+
+
+
+&amp;#x5F02;&amp;#x6B65;
+&amp;#x6309;&amp;#x9700;&amp;#x52A0;&amp;#x8F7D;
+&amp;#x540C;&amp;#x6B65;
+&amp;#x5224;&amp;#x65AD;
+&amp;#x6">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Kevin&#39;s Coffee" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/icon.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/icon.png">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/icon.png" alt="Kevin&#39;s Coffee" title="Kevin&#39;s Coffee"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Kevin&#39;s Coffee">Kevin&#39;s Coffee</a></h1>
+				<h2 class="blog-motto">虚怀若谷，人淡如梅</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首頁</a></li>
+					
+						<li><a href="/archives">所有文章</a></li>
+					
+						<li><a href="/about">關於我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/07/js的模块化/" title="js的模块化" itemprop="url">js的模块化</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Kevin Hu" target="_blank" itemprop="author">Kevin Hu</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-07T09:32:46.000Z" itemprop="datePublished"> 发表于 2016-03-07</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<table>
+<thead>
+<tr>
+<th style="text-align:left">AMD&#x89C4;&#x8303;</th>
+<th style="text-align:center">CMD&#x89C4;&#x8303;</th>
+<th style="text-align:center">commonJS&#x89C4;&#x8303;</th>
+<th style="text-align:center">UMD&#x89C4;&#x8303;</th>
+<th style="text-align:right">ES6&#x89C4;&#x8303;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&#x5F02;&#x6B65;</td>
+<td style="text-align:center">&#x6309;&#x9700;&#x52A0;&#x8F7D;</td>
+<td style="text-align:center">&#x540C;&#x6B65;</td>
+<td style="text-align:center">&#x5224;&#x65AD;</td>
+<td style="text-align:right">&#x6DF7;&#x5408;</td>
+</tr>
+<tr>
+<td style="text-align:left">&#x52A8;&#x6001;&#x52A0;&#x8F7D;</td>
+<td style="text-align:center">&#x52A8;&#x6001;&#x52A0;&#x8F7D;</td>
+<td style="text-align:center">&#x9759;&#x6001;&#x52A0;&#x8F7D;</td>
+<td style="text-align:center">&#x5224;&#x65AD;</td>
+<td style="text-align:right">&#x6DF7;&#x5408;</td>
+</tr>
+<tr>
+<td style="text-align:left">&#x524D;&#x7F6E;</td>
+<td style="text-align:center">&#x5C31;&#x8FD1;</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:right">&#x58F0;&#x660E;&amp;import</td>
+</tr>
+<tr>
+<td style="text-align:left">&#x524D;&#x7AEF;</td>
+<td style="text-align:center">&#x524D;&#x7AEF;</td>
+<td style="text-align:center">&#x540E;&#x7AEF;/&#x524D;&#x7AEF;+browserify</td>
+<td style="text-align:center">AMD/commonJS/&#x5168;&#x5C40;&#x6A21;&#x5757;</td>
+<td style="text-align:right">both</td>
+</tr>
+<tr>
+<td style="text-align:left">require.js</td>
+<td style="text-align:center">sea.js</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:right">TS</td>
+</tr>
+</tbody>
+</table>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/模块化/">模块化</a><a href="/tags/前端工程化/">前端工程化</a><a href="/tags/AMD/">AMD</a><a href="/tags/requirejs/">requirejs</a><a href="/tags/CMD/">CMD</a><a href="/tags/seajs/">seajs</a><a href="/tags/commonJS/">commonJS</a><a href="/tags/browserify/">browserify</a><a href="/tags/UMD/">UMD</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/03/07/js的模块化/" data-title="js的模块化 | Kevin&#39;s Coffee" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/03/16/项目总结1/" title="全栈练手项目总结(1)——技术选型">
+  <strong>上一篇：</strong><br/>
+  <span>
+  全栈练手项目总结(1)——技术选型</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/03/04/探索Mongoose连接池的实现/"  title="探索Mongoose连接池的实现">
+ <strong>下一篇：</strong><br/> 
+ <span>探索Mongoose连接池的实现
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="KevinHu-1024" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/全栈/" title="全栈">全栈<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/agui/" title="agui">agui<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/项目总结/" title="项目总结">项目总结<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angular/" title="angular">angular<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nodejs/" title="nodejs">nodejs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/前端工程化/" title="前端工程化">前端工程化<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularJS/" title="angularJS">angularJS<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/模块化/" title="模块化">模块化<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/读书笔记/" title="读书笔记">读书笔记<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jade/" title="jade">jade<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/前端渲染/" title="前端渲染">前端渲染<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/less/" title="less">less<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AMD/" title="AMD">AMD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/requirejs/" title="requirejs">requirejs<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CMD/" title="CMD">CMD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/seajs/" title="seajs">seajs<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/commonJS/" title="commonJS">commonJS<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/browserify/" title="browserify">browserify<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gulp/" title="gulp">gulp<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 折腾即生命 <br/>
+			Keep the curiosity to the world, forever.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/KevinHu-1024" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/4244468" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/kevinhu-1024" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:kevinhu.1024@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Kevin Hu">Kevin Hu</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?325a9a8c3667dacc6d30156da64f6f51";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

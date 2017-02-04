@@ -1,0 +1,760 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>ng-book读书笔记 | Kevin&#39;s Coffee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Kevin Hu">
+    
+
+    
+    <meta name="description" content="Data Binding and Your First AngularJS Web Application
+AngularJS的脏检测机制（dirty checking）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ng-book读书笔记">
+<meta property="og:url" content="http://yoursite.com/2016/02/22/ng-book读书笔记/index.html">
+<meta property="og:site_name" content="Kevin's Coffee">
+<meta property="og:description" content="Data Binding and Your First AngularJS Web Application
+AngularJS的脏检测机制（dirty checking）">
+<meta property="og:image" content="http://yoursite.com/images/ng-book/ng-book1.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/ng-book/1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/ng-book/2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/ng-book/3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/ng-book/4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/ng-book/5.jpg">
+<meta property="og:image" content="http://yoursite.com/images/ng-book/6.jpg">
+<meta property="og:image" content="http://yoursite.com/images/ng-book/7.jpg">
+<meta property="og:image" content="http://yoursite.com/images/ng-book/8.jpg">
+<meta property="og:updated_time" content="2017-02-04T02:01:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ng-book读书笔记">
+<meta name="twitter:description" content="Data Binding and Your First AngularJS Web Application
+AngularJS的脏检测机制（dirty checking）">
+<meta name="twitter:image" content="http://yoursite.com/images/ng-book/ng-book1.jpeg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Kevin&#39;s Coffee" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/icon.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/icon.png">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/icon.png" alt="Kevin&#39;s Coffee" title="Kevin&#39;s Coffee"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Kevin&#39;s Coffee">Kevin&#39;s Coffee</a></h1>
+				<h2 class="blog-motto">虚怀若谷，人淡如梅</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首頁</a></li>
+					
+						<li><a href="/archives">所有文章</a></li>
+					
+						<li><a href="/about">關於我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/02/22/ng-book读书笔记/" title="ng-book读书笔记" itemprop="url">ng-book读书笔记</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Kevin Hu" target="_blank" itemprop="author">Kevin Hu</a>
+		
+  <p class="article-time">
+    <time datetime="2016-02-22T12:27:04.000Z" itemprop="datePublished"> 发表于 2016-02-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#data-binding-and-your-first-angularjs-web-application"><span class="toc-number">1.</span> <span class="toc-text">Data Binding and Your First AngularJS Web Application</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#angularjs的脏检测机制dirty-checking"><span class="toc-number">1.1.</span> <span class="toc-text">AngularJS的脏检测机制（dirty checking）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是脏检测"><span class="toc-number">1.1.1.</span> <span class="toc-text">什么是脏检测？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于event-loopdigest-cycle"><span class="toc-number">1.1.2.</span> <span class="toc-text">关于event loop/digest cycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scopeapply的作用"><span class="toc-number">1.1.3.</span> <span class="toc-text">$scope.$apply()的作用？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据绑定的最佳习惯"><span class="toc-number">1.2.</span> <span class="toc-text">数据绑定的最佳习惯</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#modules"><span class="toc-number">2.</span> <span class="toc-text">Modules</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#模块是定义angularjs应用的主要方式一个应用可以有多个模块负责不同的功能"><span class="toc-number">2.1.</span> <span class="toc-text">模块是定义AngularJS应用的主要方式，一个应用可以有多个模块负责不同的功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用模块的好处"><span class="toc-number">2.2.</span> <span class="toc-text">使用模块的好处：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块相关方法"><span class="toc-number">2.3.</span> <span class="toc-text">模块相关方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#scopes"><span class="toc-number">3.</span> <span class="toc-text">Scopes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#作用域是angular应用的核心"><span class="toc-number">3.1.</span> <span class="toc-text">作用域是Angular应用的核心</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从scope的视角看整个程序"><span class="toc-number">3.2.</span> <span class="toc-text">从$scope的视角看整个程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#作用域的作用"><span class="toc-number">3.3.</span> <span class="toc-text">作用域的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于scope的生命周期"><span class="toc-number">3.4.</span> <span class="toc-text">关于$scope的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令与作用域"><span class="toc-number">3.5.</span> <span class="toc-text">命令与作用域</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#controllers"><span class="toc-number">4.</span> <span class="toc-text">Controllers</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#写控制器的最佳习惯"><span class="toc-number">4.1.</span> <span class="toc-text">写控制器的最佳习惯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#控制器嵌套层级作用域套作用域"><span class="toc-number">4.2.</span> <span class="toc-text">控制器嵌套层级（作用域套作用域）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#expressions"><span class="toc-number">5.</span> <span class="toc-text">Expressions</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#表达式的解析"><span class="toc-number">5.1.</span> <span class="toc-text">表达式的解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插入字符串"><span class="toc-number">5.2.</span> <span class="toc-text">插入字符串</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="data-binding-and-your-first-angularjs-web-application">Data Binding and Your First AngularJS Web Application</h1>
+<h2 id="angularjs&#x7684;&#x810F;&#x68C0;&#x6D4B;&#x673A;&#x5236;dirty-checking">AngularJS&#x7684;&#x810F;&#x68C0;&#x6D4B;&#x673A;&#x5236;&#xFF08;dirty checking&#xFF09;</h2>
+<a id="more"></a>
+<ol>
+<li>
+<p>&#x5F53;AngularJS&#x8BA4;&#x4E3A;&#x88AB;&#x76D1;&#x89C6;&#x7684;&#x503C;&#x53EF;&#x80FD;&#x8981;&#x53D1;&#x751F;&#x66F4;&#x6539;&#xFF0C;&#x5373;&#x53BB;&#x8C03;&#x7528;<code>$digest()</code>&#x68C0;&#x6D4B;&#x503C;&#x662F;&#x5426;&#x88AB;&#x4FEE;&#x6539;&#xFF0C;&#x540C;&#x65F6;&#x4F1A;&#x68C0;&#x6D4B;&#x6F5C;&#x5728;&#x7684;&#x88AB;&#x4FEE;&#x6539;&#x7684;&#x503C;</p>
+</li>
+<li>
+<p>&#x201C;&#x810F;&#x68C0;&#x6D4B;&#x201D;&#x673A;&#x5236;&#x5728;&#x68C0;&#x6D4B;&#x6570;&#x636E;&#x6A21;&#x578B;&#x66F4;&#x6539;&#x65F6;&#x65F6;&#x4E00;&#x79CD;&#x9AD8;&#x6548;&#x7684;&#x65B9;&#x6848;</p>
+</li>
+<li>
+<p>&#x8FD9;&#x91CC;&#x6D89;&#x53CA;&#x5230;&#x4E86;&#x51E0;&#x4E2A;&#x77E5;&#x8BC6;&#xFF1A;<code>&#x810F;&#x68C0;&#x6D4B;</code> <code>event loop/digest cycle</code> <code>$digest()&#x51FD;&#x6570;</code></p>
+</li>
+</ol>
+<h3 id="&#x4EC0;&#x4E48;&#x662F;&#x810F;&#x68C0;&#x6D4B;">&#x4EC0;&#x4E48;&#x662F;&#x810F;&#x68C0;&#x6D4B;&#xFF1F;</h3>
+<blockquote>
+<p>It checks whether a value has changed that hasn&#x2019;t yet been synchronized across the app.</p>
+</blockquote>
+<blockquote>
+<p><em>&#x2014;&#x2014;&#x300A;ng-book&#x300B;P427</em></p>
+</blockquote>
+<p><img src="/images/ng-book/ng-book1.jpeg" alt="dirty check"></p>
+<p>&#x810F;&#x68C0;&#x6D4B;&#x5C31;&#x662F;&#x68C0;&#x6D4B;&#x65B0;&#x503C;&#x4E0E;&#x65E7;&#x503C;&#x662F;&#x5426;&#x76F8;&#x7B49;&#xFF0C;&#x4E0D;&#x76F8;&#x7B49;&#x4E3A;&#x810F;&#x3002;</p>
+<h3 id="&#x5173;&#x4E8E;event-loopdigest-cycle">&#x5173;&#x4E8E;event loop/digest cycle</h3>
+<ul>
+<li>set a wathcer and watching $scope</li>
+<li>value changed -&gt; AngularJS kicks and iterating the watch list</li>
+<li>function will execute on the value and triggers the validations and formatters to run</li>
+<li>&#x8FD9;&#x4E00;&#x6B21;&#x5FAA;&#x73AF;&#x5B8C;&#x6210;&#xFF0C;AngularJS&#x8FD8;&#x8981;&#x518D;&#x4ECE;&#x5934;&#x6267;&#x884C;&#x904D;&#x5386;&#x4E00;&#x6B21;&#xFF0C;&#x76F4;&#x5230;&#x6CA1;&#x6709;&#x4EFB;&#x4F55;&#x201C;&#x810F;&#x4E1C;&#x897F;&#x201D;&#x4E3A;&#x6B62;&#xFF0C;&#x5FAA;&#x73AF;&#x9000;&#x51FA;&#xFF0C;&#x66F4;&#x65B0;DOM</li>
+</ul>
+<hr>
+<p><em>&#x95EE;&#x9898;1&#xFF1A;&#x5982;&#x4F55;&#x76D1;&#x6D4B;&#x5230;&#x8FD9;&#x4E2A;&#x5FAA;&#x73AF;&#x6267;&#x884C;&#x4E86;&#x591A;&#x5C11;&#x6B21;&#xFF1F;&#x5C31;&#x662F;&#x76D1;&#x6D4B;DOM&#x66F4;&#x65B0;&#x7684;&#x9891;&#x7387;&#xFF1F;&#x7279;&#x522B;&#x662F;watching&#x4E00;&#x4E2A;&#x8FDE;&#x7EED;&#x53D8;&#x5316;&#x7684;&#x503C;&#xFF08;&#x6BD4;&#x5982;&#x62D6;&#x52A8;&#xFF09;&#x65F6;&#xFF0C;&#x80FD;&#x4E0D;&#x80FD;&#x8DDF;&#x5F97;&#x4E0A;&#x9F20;&#x6807;&#xFF1F;&#x6027;&#x80FD;&#x5982;&#x4F55;&#xFF1F;</em></p>
+<p><em>&#x95EE;&#x9898;2&#xFF1A;DOM&#x66F4;&#x65B0;&#x662F;&#x91CD;&#x6392;&#x8FD8;&#x662F;&#x91CD;&#x7ED8;&#xFF1F;&#x6027;&#x80FD;&#x5982;&#x4F55;&#xFF1F;</em></p>
+<p><em>&#x95EE;&#x9898;3&#xFF1A;&#x5982;&#x679C;&#x78B0;&#x5230;&#x4E86;<code>a=b&#xFF1B;b=a;</code>&#x8FD9;&#x79CD;&#x503C;&#x65F6;&#x4F1A;&#x600E;&#x4E48;&#x6837;&#xFF1F;</em></p>
+<hr>
+<ul>
+<li>&#x5982;&#x679C;&#x662F;&#x70B9;&#x51FB;&#x4E8B;&#x4EF6;&#xFF0C;<code>ng-click</code>&#x5B9E;&#x9645;&#x662F;&#x7ED1;&#x5B9A;&#x4E86;&#x6D4F;&#x89C8;&#x5668;&#x539F;&#x751F;&#x7684;<code>click</code>&#x4E8B;&#x4EF6;&#xFF0C;<code>ng-click</code>&#x8C03;&#x7528;<code>$scope.$apply()</code>&#xFF0C;&#x7136;&#x540E;&#x518D;&#x8FDB;&#x5165;<code>$digest</code>&#x5FAA;&#x73AF;</li>
+</ul>
+<hr>
+<p><em>&#x95EE;&#x9898;4&#xFF1A;<code>$scope.$apply()</code>&#x7684;&#x4F5C;&#x7528;&#xFF1F;</em></p>
+<hr>
+<h3 id="scopeapply&#x7684;&#x4F5C;&#x7528;"><code>$scope.$apply()</code>&#x7684;&#x4F5C;&#x7528;&#xFF1F;</h3>
+<blockquote>
+<p>The $apply() function executes an expression inside of the Angular context from outside of the
+Angular framework.</p>
+</blockquote>
+<blockquote>
+<p><em>&#x2014;&#x2014;&#x300A;ng-book&#x300B;P433</em></p>
+</blockquote>
+<p>&#x60F3;&#x8BA9;&#x5916;&#x90E8;&#x51FD;&#x6570;&#x5728;AngularJS&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x6267;&#x884C;&#x65F6;&#xFF0C;&#x6216;&#x8005;&#x8BA9;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x4E32;&#x53D8;&#x6210;&#x4E00;&#x4E2A;js&#x8BED;&#x53E5;&#x5728;AngularJS&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x8D77;&#x4F5C;&#x7528;&#x65F6;&#xFF0C;&#x8C03;&#x7528;<code>$apply()</code>&#x65B9;&#x6CD5;&#xFF0C;&#x5728;&#x8FD9;&#x91CC;&#x7684;&#x4F5C;&#x7528;&#x5C31;&#x662F;&#xFF0C;&#x672C;&#x6765;&#x70B9;&#x51FB;&#x4E8B;&#x4EF6;&#x53D1;&#x751F;&#x5728;AngularJS&#x5916;&#x90E8;&#xFF0C;&#x4F46;&#x662F;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x8BA9;&#x4ED6;&#x5728;AngularJS&#x4F5C;&#x7528;&#x57DF;&#x5185;&#x90E8;&#x6267;&#x884C;&#xFF0C;&#x4EE5;&#x4FBF;&#x4F7F;&#x7528;&#x6211;&#x4EEC;&#x7684;&#x5904;&#x7406;&#x51FD;&#x6570;&#xFF08;&#x5916;&#x9762;&#x662F;&#x65E0;&#x6CD5;&#x8BBF;&#x95EE;&#x91CC;&#x9762;&#x7684;&#xFF0C;&#x6240;&#x4EE5;&#x8981;&#x5728;&#x91CC;&#x9762;&#x6267;&#x884C;&#xFF09;&#xFF0C;&#x6240;&#x4EE5;&#x624D;&#x8FD9;&#x6837;&#x8C03;&#x7528;&#x3002;</p>
+<h2 id="&#x6570;&#x636E;&#x7ED1;&#x5B9A;&#x7684;&#x6700;&#x4F73;&#x4E60;&#x60EF;">&#x6570;&#x636E;&#x7ED1;&#x5B9A;&#x7684;&#x6700;&#x4F73;&#x4E60;&#x60EF;</h2>
+<p>&#x6570;&#x636E;&#x7ED1;&#x5B9A;&#x5728;&#x5BF9;&#x8C61;&#x7684;&#x4E00;&#x4E2A;&#x5C5E;&#x6027;&#x4E0A;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x5BF9;&#x8C61;&#x672C;&#x8EAB;&#x4E0A;</p>
+<hr>
+<h1 id="modules">Modules</h1>
+<h2 id="&#x6A21;&#x5757;&#x662F;&#x5B9A;&#x4E49;angularjs&#x5E94;&#x7528;&#x7684;&#x4E3B;&#x8981;&#x65B9;&#x5F0F;&#x4E00;&#x4E2A;&#x5E94;&#x7528;&#x53EF;&#x4EE5;&#x6709;&#x591A;&#x4E2A;&#x6A21;&#x5757;&#x8D1F;&#x8D23;&#x4E0D;&#x540C;&#x7684;&#x529F;&#x80FD;"><strong>&#x6A21;&#x5757;</strong>&#x662F;&#x5B9A;&#x4E49;AngularJS&#x5E94;&#x7528;&#x7684;&#x4E3B;&#x8981;&#x65B9;&#x5F0F;&#xFF0C;&#x4E00;&#x4E2A;&#x5E94;&#x7528;&#x53EF;&#x4EE5;&#x6709;&#x591A;&#x4E2A;&#x6A21;&#x5757;&#x8D1F;&#x8D23;&#x4E0D;&#x540C;&#x7684;&#x529F;&#x80FD;</h2>
+<hr>
+<p><em>&#x95EE;&#x9898;&#xFF1A;&#x6A21;&#x5757;&#x95F4;&#x5982;&#x4F55;&#x901A;&#x4FE1;&#xFF1F;&#x5411;<code>$rootScope</code>&#x66B4;&#x6F0F;api?</em></p>
+<hr>
+<h2 id="&#x4F7F;&#x7528;&#x6A21;&#x5757;&#x7684;&#x597D;&#x5904;">&#x4F7F;&#x7528;&#x6A21;&#x5757;&#x7684;&#x597D;&#x5904;&#xFF1A;</h2>
+<ul>
+<li>&#x4E0D;&#x6C61;&#x67D3;&#x5168;&#x5C40;&#x4F5C;&#x7528;&#x57DF;</li>
+<li>&#x5BB9;&#x6613;&#x6D4B;&#x8BD5;&#xFF0C;&#x4EE3;&#x7801;&#x7B80;&#x6D01;&#xFF0C;&#x5206;&#x79BB;&#x529F;&#x80FD;&#xFF08;&#x6211;&#x6700;&#x559C;&#x6B22;&#x7684;&#x8BBE;&#x8BA1;&#x65B9;&#x5F0F;&#xFF09;</li>
+<li>&#x4E0D;&#x540C;&#x5E94;&#x7528;&#x4E4B;&#x95F4;&#x4EE3;&#x7801;&#x5BB9;&#x6613;&#x590D;&#x7528;</li>
+<li>&#x5E94;&#x7528;&#x53EF;&#x4EE5;&#x6309;&#x4E0D;&#x540C;&#x987A;&#x5E8F;&#x52A0;&#x8F7D;&#x5404;&#x90E8;&#x5206;&#x4EE3;&#x7801;&#xFF0C;&#x65B9;&#x4FBF;&#x7EF4;&#x6301;&#x4F9D;&#x8D56;&#x5173;&#x7CFB;</li>
+</ul>
+<h2 id="&#x6A21;&#x5757;&#x76F8;&#x5173;&#x65B9;&#x6CD5;">&#x6A21;&#x5757;&#x76F8;&#x5173;&#x65B9;&#x6CD5;</h2>
+<ul>
+<li>
+<p>&#x4F7F;&#x7528; angular.module(<em>String:name</em>, <em>Array:listOfDependencies</em>)&#xFF08;typescript&#x5927;&#x6CD5;&#x597D;&#xFF0C;&#x4E25;&#x683C;&#x7C7B;&#x578B;&#x4E0B;&#x770B;&#x65B9;&#x6CD5;&#x90FD;&#x65B9;&#x4FBF;&#x591A;&#x4E86;&#xFF09;&#x65B9;&#x6CD5;&#x6765;&#x58F0;&#x660E;&#x6A21;&#x5757;&#xFF0C;&#x5B83;&#x5305;&#x542B;&#x4E24;&#x4E2A;&#x53C2;&#x6570;&#xFF0C;&#x4E00;&#x662F;&#x6A21;&#x5757;&#x540D;&#x79F0;&#xFF0C;&#x4E8C;&#x662F;&#x4F9D;&#x8D56;&#x5217;&#x8868;&#xFF0C;&#x4E5F;&#x79F0;&#x4F9D;&#x8D56;&#x6CE8;&#x5165;</p>
+</li>
+<li>
+<p>angular.module(<em>String:name</em>, <em>Array:listOfDependencies</em>) &#x662F;&#x6A21;&#x5757;&#x7684;<code>setter</code>&#x65B9;&#x6CD5;&#xFF0C;&#x5B9A;&#x4E49;&#x6A21;&#x5757;</p>
+</li>
+<li>
+<p>angular.module(<em>String:name</em>) &#x662F;&#x6A21;&#x5757;&#x7684;<code>getter</code>&#x65B9;&#x6CD5;&#xFF0C;&#x8C03;&#x7528;&#x6700;&#x8FD1;&#x5F15;&#x7528;&#x7684;&#x6A21;&#x5757;&#xFF08;&#x610F;&#x5473;&#x7740;&#x5982;&#x679C;&#x6A21;&#x5757;&#x540C;&#x540D;&#xFF0C;&#x5B9A;&#x4E49;&#x4F1A;&#x88AB;&#x6700;&#x65B0;&#x7684;&#x8986;&#x76D6;&#xFF09;</p>
+</li>
+</ul>
+<hr>
+<h1 id="scopes">Scopes</h1>
+<h2 id="&#x4F5C;&#x7528;&#x57DF;&#x662F;angular&#x5E94;&#x7528;&#x7684;&#x6838;&#x5FC3;">&#x4F5C;&#x7528;&#x57DF;&#x662F;Angular&#x5E94;&#x7528;&#x7684;&#x6838;&#x5FC3;</h2>
+<ol>
+<li>
+<p>&#x4F5C;&#x7528;&#x57DF;&#x548C;Model&#x662F;&#x5173;&#x8054;&#x7684;&#xFF0C;&#x540C;&#x65F6;&#x4E5F;&#x662F;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x4F5C;&#x7528;&#x57DF;</p>
+</li>
+<li>
+<p><code>$scope</code>&#x5BF9;&#x8C61;&#x4E2D;&#x6211;&#x4EEC;&#x7528;&#x6765;&#x5B9A;&#x4E49;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x3001;&#x63A7;&#x5236;&#x5668;&#x7684;&#x65B9;&#x6CD5;&#x3001;&#x89C6;&#x56FE;&#x4E2D;&#x7684;&#x5C5E;&#x6027;</p>
+</li>
+<li>
+<p>&#x4F5C;&#x7528;&#x57DF;&#x662F;&#x8FDE;&#x63A5;&#x89C6;&#x56FE;&#x548C;&#x63A7;&#x5236;&#x5668;&#x7684;&#x80F6;&#x6C34;&#xFF0C;&#x6709;&#x5229;&#x4E8E;&#x5B9E;&#x73B0;<code>promise</code></p>
+</li>
+</ol>
+<p><img src="/images/ng-book/1.jpg" alt="gule between C&amp;amp;V"></p>
+<hr>
+<p><em>&#x95EE;&#x9898;1&#xFF1A;<code>promise</code>&#x662F;&#x5565;&#xFF1F;&#x4E3A;&#x4EC0;&#x4E48;&#x6709;&#x5229;&#x4E8E;&#x5B9E;&#x73B0;&#x5B83;&#xFF1F;</em></p>
+<hr>
+<ol start="4">
+<li>
+<p>&#x56E0;&#x4E3A;&#x6709;&#x5B9E;&#x65F6;&#x7ED1;&#x5B9A;&#x7684;&#x5B58;&#x5728;&#xFF0C;&#x6545;&#x4F5C;&#x7528;&#x57DF;&#x80FD;&#x591F;&#x6700;&#x771F;&#x5B9E;&#x7684;&#x53CD;&#x6620;&#x7A0B;&#x5E8F;&#x7684;&#x72B6;&#x6001;</p>
+</li>
+<li>
+<p><code>$scope</code>&#x5B9E;&#x73B0;&#x4E86;&#x7C7B;&#x4F3C;&#x4E8E;DOM&#x7684;&#x5C42;&#x7EA7;&#x7ED3;&#x6784;&#xFF0C;&#x5B50;&#x4F5C;&#x7528;&#x57DF;&#x53EF;&#x4EE5;&#x8C03;&#x7528;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x7684;&#x5C5E;&#x6027;&#x3002;AngularJS&#x5B9E;&#x9645;&#x4E0A;&#x662F;&#x4E3A;DOM&#x5143;&#x7D20;&#x521B;&#x5EFA;&#x4E86;&#x5B83;&#x7684;&#x79C1;&#x6709;&#x4F5C;&#x7528;&#x57DF;</p>
+</li>
+<li>
+<p>&#x4F5C;&#x7528;&#x57DF;&#x63D0;&#x4F9B;&#x4E86;&#x76D1;&#x89C6;<code>Model</code>&#x6539;&#x53D8;&#x7684;&#x80FD;&#x529B;</p>
+</li>
+<li>
+<p>&#x6211;&#x4EEC;&#x5728;&#x4F5C;&#x7528;&#x4E8E;&#x4E2D;&#x5B9A;&#x4E49;&#x53CA;&#x6267;&#x884C;&#x8868;&#x8FBE;&#x5F0F;&#xFF0C;&#x540C;&#x65F6;&#x53EF;&#x4EE5;&#x5728;&#x63A7;&#x5236;&#x5668;&#x4E4B;&#x95F4;&#x751A;&#x81F3;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5185;&#x4E0D;&#x540C;&#x7EC4;&#x4EF6;&#x4E4B;&#x95F4;&#x4F20;&#x9012;&#x4E8B;&#x4EF6;</p>
+</li>
+<li>
+<p>&#x6700;&#x597D;&#x5C06;&#x7A0B;&#x5E8F;&#x903B;&#x8F91;&#x653E;&#x5728;&#x63A7;&#x5236;&#x5668;&#x4E2D;&#xFF0C;&#x5C06;&#x6240;&#x9700;&#x6570;&#x636E;&#x653E;&#x5728;scope&#x4E2D;</p>
+</li>
+</ol>
+<h2 id="&#x4ECE;scope&#x7684;&#x89C6;&#x89D2;&#x770B;&#x6574;&#x4E2A;&#x7A0B;&#x5E8F;">&#x4ECE;$scope&#x7684;&#x89C6;&#x89D2;&#x770B;&#x6574;&#x4E2A;&#x7A0B;&#x5E8F;</h2>
+<p><em>&#x5173;&#x4E8E;</em>The $scope View of the World<em>&#x8FD9;&#x4E00;&#x8282;&#x7684;&#x9898;&#x76EE;&#xFF0C;&#x7FFB;&#x8BD1;&#x7684;&#x5B9E;&#x5728;&#x592A;&#x6C34;&#xFF0C;&#x9898;&#x76EE;&#x672C;&#x6765;&#x7684;&#x610F;&#x601D;&#x662F;&#x201C;&#x4ECE;$scope&#x7684;&#x89C6;&#x89D2;&#x770B;&#x6574;&#x4E2A;&#x7A0B;&#x5E8F;&#x201D;&#xFF0C;&#x7ED3;&#x679C;&#x88AB;&#x7FFB;&#x8BD1;&#x6210;&#x4E86;&#x201C;&#x89C6;&#x56FE;&#x548C; $scope &#x7684;&#x4E16;&#x754C;&#x201D;&#xFF0C;&#x7136;&#x540E;&#x91CC;&#x9762;&#x8FD8;&#x5E76;&#x6CA1;&#x6709;&#x7EC6;&#x8BB2;&#x89C6;&#x56FE;&#x7684;&#x4E8B;&#x60C5;&#xFF0C;&#x5B9E;&#x5728;&#x662F;&#x5475;&#x5475;&#x2026;</em></p>
+<ol>
+<li>&#x5173;&#x4E8E;<code>$rootScope</code>&#xFF1A;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;angularJS&#x4E2D;&#x7684;&#x201C;&#x5168;&#x5C40;&#x4F5C;&#x7528;&#x57DF;&#x201D;&#xFF0C;&#x91CC;&#x9762;&#x53EF;&#x4EE5;&#x5305;&#x542B;&#x5F88;&#x591A;&#x5B50;&#x7EA7;&#x4F5C;&#x7528;&#x57DF;&#x3002;&#x4E0E;&#x539F;&#x751F;js&#x540C;&#x6837;&#x7684;&#xFF0C;&#x6700;&#x597D;&#x4E0D;&#x8981;&#x6C61;&#x67D3;&#x8FD9;&#x4E2A;&#x5168;&#x5C40;&#x4F5C;&#x7528;&#x57DF;</li>
+</ol>
+<p><img src="/images/ng-book/2.jpg" alt="$rootScope"></p>
+<ol start="2">
+<li>
+<p><code>$scope</code>&#x5BF9;&#x8C61;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;js&#x5BF9;&#x8C61;&#xFF0C;&#x53EF;&#x4EE5;&#x968F;&#x610F;&#x66F4;&#x6539;&#x91CC;&#x9762;&#x7684;&#x5C5E;&#x6027;&#x3002;&#x6362;&#x53E5;&#x8BDD;&#x8BF4;&#x5B83;&#x4F5C;&#x4E3A;&#x7EAF;&#x7CB9;&#x7684;Model&#xFF0C;&#x5E76;&#x4E0D;&#x5177;&#x5907;&#x5904;&#x7406;&#x548C;&#x64CD;&#x4F5C;&#x6570;&#x636E;&#x7684;&#x80FD;&#x529B;&#xFF0C;&#x53EA;&#x662F;&#x8854;&#x63A5;&#x4E86;&#x89C6;&#x56FE;&#x4E0E;&#x63A7;&#x5236;&#x5668;&#x800C;&#x5DF2;</p>
+</li>
+<li>
+<p><strong>View &#x53EF;&#x4EE5;&#x8BBF;&#x95EE;&#x5230; $scope &#x4E2D;&#x7684;&#x6240;&#x6709;&#x6570;&#x636E;</strong></p>
+</li>
+</ol>
+<hr>
+<p>&#x95EE;&#x9898;2&#xFF1A;&#x662F;&#x6BCF;&#x4E00;&#x4E2A;$scope&#x5417;&#xFF1F;&#x8FD8;&#x662F;&#x8FD9;&#x4E2A;&#x89C6;&#x56FE;&#x6240;&#x5728;&#x63A7;&#x5236;&#x5668;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x53CA;&#x5176;&#x7236;&#x7EA7;&#x4F5C;&#x7528;&#x57DF;&#x7684;$scope&#xFF1F;&#x662F;&#x5426;&#x9075;&#x5FAA;&#x539F;&#x751F;js&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x94FE;&#x673A;&#x5236;&#xFF1F;</p>
+<hr>
+<ol start="4">
+<li>AngularJS&#x6E32;&#x67D3;&#x6A21;&#x677F;&#x4E2D;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x7684;&#x6807;&#x8BB0;&#x6709;&#xFF1A;</li>
+</ol>
+<ul>
+<li>&#x6307;&#x4EE4;</li>
+<li>&#x6570;&#x636E;&#x7ED1;&#x5B9A;</li>
+<li>&#x8FC7;&#x6EE4;&#x5668;</li>
+<li>&#x8868;&#x5355;&#x63A7;&#x5236;</li>
+</ul>
+<h2 id="&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x4F5C;&#x7528;">&#x4F5C;&#x7528;&#x57DF;&#x7684;&#x4F5C;&#x7528;</h2>
+<p><img src="/images/ng-book/3.jpg" alt="what scopes do"></p>
+<ol>
+<li>
+<p>&#x518D;&#x6B21;&#x5F3A;&#x8C03;<strong>&#x4F5C;&#x7528;&#x57DF;&#x80FD;&#x591F;&#x6700;&#x771F;&#x5B9E;&#x7684;&#x53CD;&#x6620;&#x7A0B;&#x5E8F;&#x7684;&#x72B6;&#x6001;</strong>&#xFF0C;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x4F5C;&#x7528;&#x57DF;&#x662F;ViewModel&#xFF0C;&#x8FD9;&#x5C31;&#x662F;MVVM&#x7684;&#x7531;&#x6765;</p>
+</li>
+<li>
+<p>&#x5728;DOM&#x5143;&#x7D20;&#x4E0A;&#x4F7F;&#x7528;<code>ng-controller</code>&#x547D;&#x4EE4;&#xFF0C;&#x53EF;&#x4EE5;&#x5411;&#x8FD9;&#x4E2A;DOM&#x5143;&#x7D20;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x63A7;&#x5236;&#x5668;</p>
+</li>
+</ol>
+<p><img src="/images/ng-book/4.jpg" alt="myApp"></p>
+<h2 id="&#x5173;&#x4E8E;scope&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;">&#x5173;&#x4E8E;<code>$scope</code>&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;</h2>
+<p><img src="/images/ng-book/5.jpg" alt="scope lifecycle"></p>
+<ol>
+<li>&#x5982;&#x4F55;&#x89E6;&#x53D1;&#x56DE;&#x8C03;&#xFF1F;</li>
+</ol>
+<p>&#x5F53;&#x6D4F;&#x89C8;&#x5668;&#x6536;&#x5230;&#x4E00;&#x4E2A;&#x6267;&#x884C;&#x4E0E;AngularJS&#x4F5C;&#x7528;&#x57DF;&#x5185;&#x7684;&#x51FD;&#x6570;&#x56DE;&#x8C03;&#x65F6;&#xFF0C;<code>$scope</code>&#x4F1A;&#x610F;&#x8BC6;&#x5230;Model&#x53EF;&#x80FD;&#x53D1;&#x751F;&#x4E86;&#x53D8;&#x5316;&#x3002;&#x800C;&#x89E6;&#x53D1;&#x56DE;&#x8C03;&#x6307;&#x7684;&#x662F;&#xFF1A;&#x5982; <code>ng-model</code>&#x76D1;&#x63A7;&#x7684;<code>&lt;input&gt;</code>&#x6216;<code>ng-click</code>&#x76D1;&#x63A7;&#x7684;<code>&lt;button&gt;</code>&#x53D1;&#x751F;&#x4E86;&#x72B6;&#x6001;&#x6216;&#x503C;&#x7684;&#x6539;&#x53D8;&#xFF0C;&#x5C31;&#x4F1A;&#x89E6;&#x53D1;&#x5BF9;&#x5E94;&#x7ED1;&#x5B9A;&#x7684;&#x63A7;&#x5236;&#x5668;&#x51FD;&#x6570;&#x3002;</p>
+<ol start="2">
+<li>
+<p>&#x518D;&#x6B21;&#x63D0;&#x5230;&#x4F7F;&#x7528;<code>$apply()</code>&#x53EF;&#x4EE5;&#x5F3A;&#x5236;<code>$scope</code>&#x4E4B;&#x5916;&#x7684;&#x8868;&#x8FBE;&#x5F0F;&#x6267;&#x884C;&#x4E8E;<code>$scope</code>&#x4E4B;&#x5185;</p>
+</li>
+<li>
+<p>&#x751F;&#x547D;&#x5468;&#x671F;&#xFF1A;<strong>Creation</strong> -&gt; <strong>Linking</strong> -&gt; <strong>Updating</strong> -&gt; <strong>Destruction</strong></p>
+</li>
+</ol>
+<p><img src="/images/ng-book/6.jpg" alt="scope creation">
+<img src="/images/ng-book/7.jpg" alt="scope linking">
+<img src="/images/ng-book/8.jpg" alt="scope updating"></p>
+<ol start="4">
+<li>&#x5728;<strong>Destruction</strong>&#x5B8C;&#x6210;&#x4E4B;&#x540E;&#xFF0C;<code>$destroy</code>&#x4E8B;&#x4EF6;&#x5C06;&#x88AB;&#x89E6;&#x53D1;&#x51FA;&#x6765;</li>
+</ol>
+<h2 id="&#x547D;&#x4EE4;&#x4E0E;&#x4F5C;&#x7528;&#x57DF;">&#x547D;&#x4EE4;&#x4E0E;&#x4F5C;&#x7528;&#x57DF;</h2>
+<p>&#x4E00;&#x822C;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x547D;&#x4EE4;&#x4E0D;&#x4F1A;&#x521B;&#x5EFA;&#x4ED6;&#x4EEC;&#x81EA;&#x5DF1;&#x7684;<code>$scope</code>&#xFF0C;&#x9664;&#x4E86;&#x4E0B;&#x9762;&#x7684;&#x60C5;&#x51B5;&#xFF1A;</p>
+<p><code>ng-controller</code>&#x548C;<code>ng-repeat</code>&#x4F1A;&#x521B;&#x5EFA;&#x4ED6;&#x4EEC;&#x81EA;&#x5DF1;&#x7684;&#x5B50;<code>$scope</code>&#xFF0C;&#x5E76;&#x628A;&#x4ED6;&#x4EEC;&#x6DFB;&#x52A0;&#x5230;DOM&#x5143;&#x7D20;&#x4E2D;</p>
+<hr>
+<h1 id="controllers">Controllers</h1>
+<p>&#x63A7;&#x5236;&#x5668;&#x4E3A;&#x4E86;&#x589E;&#x5F3A;&#x89C6;&#x56FE;&#x7684;&#x529F;&#x80FD;&#x800C;&#x5B58;&#x5728;&#xFF0C;AngularJS&#x4E2D;&#x7684;&#x63A7;&#x5236;&#x5668;&#x4F1A;&#x5411;View&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x5185;&#x6DFB;&#x52A0;&#x989D;&#x5916;&#x7684;&#x529F;&#x80FD;</p>
+<p>&#x63A7;&#x5236;&#x5668;&#x7684;&#x547D;&#x540D;&#x89C4;&#x8303;*[Name]*Controller</p>
+<p>&#x5F53;&#x63A7;&#x5236;&#x5668;&#x521B;&#x5EFA;<code>$scope</code>&#x65F6;&#xFF0C;AngularJS&#x5C31;&#x4F1A;&#x628A;&#x5B83;&#x8C03;&#x7528;&#x4E86;&#x4E00;&#x6B21;</p>
+<p>&#x521B;&#x5EFA;&#x63A7;&#x5236;&#x5668;&#x65F6;&#xFF0C;&#x4E0D;&#x8981;&#x6C61;&#x67D3;&#x5168;&#x5C40;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x5E94;&#x8BE5;&#x628A;&#x5B83;&#x653E;&#x5728;&#x4E00;&#x4E2A;&#x6A21;&#x5757;&#x4E2D;&#x9694;&#x79BB;&#x5F00;&#x6765;</p>
+<p>&#x60F3;&#x5728;View&#x4E2D;&#x521B;&#x5EFA;&#x81EA;&#x5B9A;&#x4E49;&#x52A8;&#x4F5C;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x7528;&#x5728;&#x63A7;&#x5236;&#x5668;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x5185;&#x521B;&#x5EFA;&#x51FD;&#x6570;</p>
+<p>&#x60F3;&#x7ED1;&#x5B9A;&#x6309;&#x94AE;&#x6216;&#x94FE;&#x63A5;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x53E6;&#x4E00;&#x79CD;&#x65B9;&#x5F0F;&#xFF1A;<code>ng-click</code>&#x6307;&#x4EE4;&#x3002;<code>ng-click</code>&#x6307;&#x4EE4;&#x628A;&#x5B83;&#x7684;&#x5904;&#x7406;&#x51FD;&#x6570;&#x7ED1;&#x5B9A;&#x7ED9;&#x4E86;&#x6D4F;&#x89C8;&#x5668;&#x539F;&#x751F;&#x7684;<code>mouseup</code>&#x4E8B;&#x4EF6;&#xFF0C;&#x8FD9;&#x4E5F;&#x662F;&#x4E3A;&#x4EC0;&#x4E48;&#x6211;&#x4EEC;&#x5728;&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x4F7F;&#x7528;<code>$scope.$apply()</code>&#x56E0;&#x4E3A;&#xFF0C;&#x5982;&#x679C;&#x4F7F;&#x7528;&#x8FD9;&#x4E2A;&#xFF0C;&#x90A3;&#x4E48;<code>ng-click</code>&#x6307;&#x4EE4;&#x7684;&#x5904;&#x7406;&#x51FD;&#x6570;&#x5C31;&#x4F1A;&#x6267;&#x884C;&#x5728;&#x6D4F;&#x89C8;&#x5668;&#x7684;&#x5168;&#x5C40;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x800C;&#x4E0D;&#x662F;AngularJS&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;</p>
+<p><code>ng-click</code>&#x8C03;&#x7528;&#x5904;&#x7406;&#x51FD;&#x6570;&#x65F6;&#x8981;&#x5E26;&#x53C2;&#x91CF;</p>
+<p>&#x518D;&#x6B21;&#x63D0;&#x5230;&#x7236;&#x7EA7;<code>$scope</code>&#x4E2D;&#x7684;&#x5C5E;&#x6027;&#x53EF;&#x4EE5;&#x88AB;&#x5176;&#x81EA;&#x5DF1;&#x8BBF;&#x95EE;</p>
+<h2 id="&#x5199;&#x63A7;&#x5236;&#x5668;&#x7684;&#x6700;&#x4F73;&#x4E60;&#x60EF;">&#x5199;&#x63A7;&#x5236;&#x5668;&#x7684;&#x6700;&#x4F73;&#x4E60;&#x60EF;</h2>
+<p>&#x4FDD;&#x6301;&#x63A7;&#x5236;&#x5668;&#x8DB3;&#x591F;&#x7CBE;&#x5DE7;</p>
+<p>&#x63A7;&#x5236;&#x5668;&#x53EF;&#x4EE5;&#x5728;&#x4E00;&#x4E2A;&#x72EC;&#x7ACB;&#x7684;&#x5BB9;&#x5668;&#x4E2D;&#x628A;&#x5C01;&#x88C5;&#x4E0E;&#x4E00;&#x4E2A;&#x72EC;&#x7ACB;&#x89C6;&#x56FE;&#x76F8;&#x5173;&#x7684;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#xFF0C;&#x4F7F;&#x7528;&#x4F9D;&#x8D56;&#x6CE8;&#x5165;&#x7279;&#x6027;&#x53EF;&#x4EE5;&#x5B8C;&#x6210;&#x8FD9;&#x4E2A;&#x76EE;&#x7684;&#xFF08;&#x6BD4;&#x5982;&#x58F0;&#x660E;&#x6A21;&#x5757;&#x662F;&#x4F20;&#x5165;&#x7684;&#x4F9D;&#x8D56;&#x5217;&#x8868;&#xFF09;</p>
+<p>AngularJS&#x4E0E;&#x5176;&#x4ED6;js&#x6846;&#x67B6;&#x7684;&#x533A;&#x522B;&#x5728;&#x4E8E;&#xFF0C;&#x63A7;&#x5236;&#x5668;&#x4E0D;&#x9002;&#x5408;&#x505A;&#x4EFB;&#x4F55;DOM&#x64CD;&#x4F5C;&#x3001;&#x683C;&#x5F0F;&#x5316;&#x3001;&#x6570;&#x636E;&#x5904;&#x7406;&#x3001;&#x4EE5;&#x53CA;&#x5176;&#x4ED6;&#x8D85;&#x51FA;<strong>&#x5B58;&#x50A8;</strong>Model&#x6570;&#x636E;&#x7684;&#x884C;&#x4E3A;&#xFF0C;&#x4ED6;&#x53EA;&#x662F;&#x8FDE;&#x63A5;&#x4E86;View&#x548C;Model</p>
+<hr>
+<p>&#x95EE;&#x9898;&#xFF1A;</p>
+<p>Controller&#x4E0D;&#x9002;&#x5408;&#x505A;DOM&#x64CD;&#x4F5C;&#x3001;&#x683C;&#x5F0F;&#x5316;&#x3001;&#x6570;&#x636E;&#x5904;&#x7406;&#xFF0C;&#x4E0D;&#x5EFA;&#x8BAE;&#x6DFB;&#x52A0;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x3002;&#x53EA;&#x80FD;&#x5B58;&#x50A8;Model&#x6570;&#x636E;&#xFF0C;&#x53EA;&#x662F;&#x8FDE;&#x63A5;&#x4E86;View&#x548C;Model</p>
+<p>Model&#x4E0D;&#x80FD;&#x5904;&#x7406;&#x548C;&#x64CD;&#x4F5C;&#x6570;&#x636E;&#xFF0C;&#x53EA;&#x662F;&#x8854;&#x63A5;&#x4E86;&#x89C6;&#x56FE;&#x4E0E;&#x63A7;&#x5236;&#x5668;&#x800C;&#x5DF2;</p>
+<p>&#x90A3;&#x4E48;DOM&#x64CD;&#x4F5C;&#x88AB;AngularJS&#x4E2D;&#x7684;<code>$digest()</code>&#x63A5;&#x624B;&#x4E86;&#xFF0C;&#x6570;&#x636E;&#x5904;&#x7406;&#x548C;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x600E;&#x4E48;&#x529E;&#xFF1F;</p>
+<hr>
+<h2 id="&#x63A7;&#x5236;&#x5668;&#x5D4C;&#x5957;&#x5C42;&#x7EA7;&#x4F5C;&#x7528;&#x57DF;&#x5957;&#x4F5C;&#x7528;&#x57DF;">&#x63A7;&#x5236;&#x5668;&#x5D4C;&#x5957;&#x5C42;&#x7EA7;&#xFF08;&#x4F5C;&#x7528;&#x57DF;&#x5957;&#x4F5C;&#x7528;&#x57DF;&#xFF09;</h2>
+<p>ng&#x5E94;&#x7528;&#x7684;&#x6BCF;&#x4E2A;&#x90E8;&#x5206;&#x90FD;&#x6709;&#x7236;&#x4F5C;&#x7528;&#x57DF;&#xFF0C;&#x65E0;&#x8BBA;&#x5B83;&#x5728;&#x54EA;&#x4E2A;&#x4E0A;&#x4E0B;&#x6587;&#x4E2D;&#x88AB;&#x6E32;&#x67D3;</p>
+<p>&#x5F53;&#x7136;&#x4E5F;&#x6709;&#x4F8B;&#x5916;&#xFF0C;&#x5728;&#x6307;&#x4EE4;&#x5185;&#x90E8;&#x521B;&#x5EFA;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x6210;&#x4E3A;<code>isolate&#xFF08;&#x9694;&#x79BB;&#xFF09;</code>&#x4F5C;&#x7528;&#x57DF;</p>
+<p>AngularJS&#x4F9D;&#x9760;DOM&#x5C42;&#x7EA7;&#x6765;&#x533A;&#x5206;&#x7236;&#x5B50;&#x4F5C;&#x7528;&#x57DF;</p>
+<p>&#x518D;&#x6B21;&#x5F3A;&#x8C03;&#x8981;&#x4FDD;&#x6301;&#x63A7;&#x5236;&#x5668;&#x7684;&#x7CBE;&#x5DE7;&#xFF0C;&#x4E0D;&#x8981;&#x518D;&#x5176;&#x4E2D;&#x8FDB;&#x884C;DOM&#x64CD;&#x4F5C;</p>
+<h1 id="expressions">Expressions</h1>
+<p>&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x51E0;&#x4E2A;&#x91CD;&#x8981;&#x70B9;&#xFF1A;</p>
+<ul>
+<li>&#x8868;&#x8FBE;&#x5F0F;&#x6267;&#x884C;&#x4E8E;&#x4E0A;&#x4E0B;&#x6587;&#x4E2D;&#xFF0C;&#x80FD;&#x591F;&#x8BBF;&#x95EE;&#x5230;&#x672C;&#x5730;&#x7684;&#x4F5C;&#x7528;&#x57DF;</li>
+<li>&#x5F53;&#x5B83;&#x9047;&#x5230;TypeError&#x548C;ReferenceError&#x65F6;&#x4E0D;&#x4F1A;&#x629B;&#x51FA;&#x5F02;&#x5E38;</li>
+<li>&#x8868;&#x8FBE;&#x5F0F;&#x4E2D;&#x4E0D;&#x5141;&#x8BB8;&#x4EFB;&#x4F55;&#x63A7;&#x5236;&#x6D41;&#xFF08;&#x6BD4;&#x5982;if/else&#xFF09;</li>
+<li>&#x8868;&#x8FBE;&#x5F0F;&#x80FD;&#x591F;&#x8BBF;&#x95EE;&#x8FC7;&#x6EE4;&#x5668;&#x6216;&#x8FC7;&#x6EE4;&#x5668;&#x94FE;</li>
+</ul>
+<p>&#x7531;&#x4E8E;&#x8868;&#x8FBE;&#x5F0F;&#x8FD0;&#x884C;&#x4E8E;&#x8C03;&#x7528;&#x5B83;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#xFF0C;&#x5B83;&#x53EF;&#x4EE5;&#x8C03;&#x7528;&#x5728;&#x5176;&#x8303;&#x56F4;&#x5185;&#x90A3;&#x4E9B;&#x7ED1;&#x5B9A;&#x5728;&#x4F5C;&#x7528;&#x57DF;&#x4E0A;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5FAA;&#x73AF;&#x53D8;&#x91CF;&#x3001;&#x8C03;&#x7528;&#x51FD;&#x6570;&#x3001;&#x6216;&#x5BF9;&#x53D8;&#x91CF;&#x8FDB;&#x884C;&#x6570;&#x5B66;&#x8BA1;&#x7B97;</p>
+<h2 id="&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x89E3;&#x6790;">&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x89E3;&#x6790;</h2>
+<p>&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x89E3;&#x6790;&#x5206;&#x4E3A;&#x81EA;&#x52A8;&#x548C;&#x624B;&#x52A8;&#xFF0C;&#x4E00;&#x822C;&#x60C5;&#x51B5;&#x4E0B;AngularJS&#x4F1A;&#x5728;<code>$diest</code>&#x5FAA;&#x73AF;&#x4E2D;&#x81EA;&#x52A8;&#x5B8C;&#x6210;&#x89E3;&#x6790;&#x3002;</p>
+<p>&#x4F46;&#x6709;&#x4E9B;&#x65F6;&#x5019;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x624B;&#x52A8;&#x89E3;&#x6790;&#x8868;&#x8FBE;&#x5F0F;&#xFF0C;&#x8FD9;&#x65F6;&#x5C31;&#x9700;&#x8981;&#x8C03;&#x7528;AngularJS&#x4E2D;&#x7684;&#x5185;&#x7F6E;&#x670D;&#x52A1;<code>$parse</code>&#x6765;&#x5E2E;&#x6211;&#x4EEC;&#x5B8C;&#x6210;&#x89E3;&#x6790;&#xFF0C;<code>$parse</code>&#x80FD;&#x591F;&#x8BBF;&#x95EE;&#x5230;&#x5F53;&#x524D;&#x4F5C;&#x7528;&#x57DF;&#x4E0B;&#x539F;&#x59CB;&#x7684;js&#x6570;&#x636E;&#x548C;&#x51FD;&#x6570;</p>
+<p>&#x5728;&#x624B;&#x52A8;&#x89E3;&#x6790;&#x8868;&#x8FBE;&#x5F0F;&#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x5C06;<code>$parse</code>&#x670D;&#x52A1;&#x6CE8;&#x5165;&#x5230;&#x63A7;&#x5236;&#x5668;&#x4E2D;&#xFF0C;&#x5E76;&#x4E14;&#x8C03;&#x7528;&#x8FD9;&#x4E2A;&#x670D;&#x52A1;&#x6765;&#x89E3;&#x6790;&#x8868;&#x8FBE;&#x5F0F;&#x3002;</p>
+<p>&#x5982;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> aaa = <span class="function"><span class="keyword">function</span>(<span class="params">$scope, $parse</span>) </span>{ <span class="comment">// &#x6CE8;&#x5165;&#x670D;&#x52A1;</span></div><div class="line">    ...</div><div class="line">    var parseFun = $parse(newVal); <span class="comment">// &#x8C03;&#x7528;&#x670D;&#x52A1;</span></div><div class="line">    ...</div><div class="line">}</div></pre></td></tr></table></figure>
+<h2 id="&#x63D2;&#x5165;&#x5B57;&#x7B26;&#x4E32;">&#x63D2;&#x5165;&#x5B57;&#x7B26;&#x4E32;</h2>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/读书笔记/">读书笔记</a><a href="/tags/angularJS/">angularJS</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/02/22/ng-book读书笔记/" data-title="ng-book读书笔记 | Kevin&#39;s Coffee" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/02/27/探索Express中的render/" title="探索Express中的render">
+  <strong>上一篇：</strong><br/>
+  <span>
+  探索Express中的render</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/02/22/Jade在前端渲染中的使用/"  title="Jade在前端渲染中的使用">
+ <strong>下一篇：</strong><br/> 
+ <span>Jade在前端渲染中的使用
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#data-binding-and-your-first-angularjs-web-application"><span class="toc-number">1.</span> <span class="toc-text">Data Binding and Your First AngularJS Web Application</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#angularjs的脏检测机制dirty-checking"><span class="toc-number">1.1.</span> <span class="toc-text">AngularJS的脏检测机制（dirty checking）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是脏检测"><span class="toc-number">1.1.1.</span> <span class="toc-text">什么是脏检测？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于event-loopdigest-cycle"><span class="toc-number">1.1.2.</span> <span class="toc-text">关于event loop/digest cycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scopeapply的作用"><span class="toc-number">1.1.3.</span> <span class="toc-text">$scope.$apply()的作用？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据绑定的最佳习惯"><span class="toc-number">1.2.</span> <span class="toc-text">数据绑定的最佳习惯</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#modules"><span class="toc-number">2.</span> <span class="toc-text">Modules</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#模块是定义angularjs应用的主要方式一个应用可以有多个模块负责不同的功能"><span class="toc-number">2.1.</span> <span class="toc-text">模块是定义AngularJS应用的主要方式，一个应用可以有多个模块负责不同的功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用模块的好处"><span class="toc-number">2.2.</span> <span class="toc-text">使用模块的好处：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块相关方法"><span class="toc-number">2.3.</span> <span class="toc-text">模块相关方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#scopes"><span class="toc-number">3.</span> <span class="toc-text">Scopes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#作用域是angular应用的核心"><span class="toc-number">3.1.</span> <span class="toc-text">作用域是Angular应用的核心</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从scope的视角看整个程序"><span class="toc-number">3.2.</span> <span class="toc-text">从$scope的视角看整个程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#作用域的作用"><span class="toc-number">3.3.</span> <span class="toc-text">作用域的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于scope的生命周期"><span class="toc-number">3.4.</span> <span class="toc-text">关于$scope的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令与作用域"><span class="toc-number">3.5.</span> <span class="toc-text">命令与作用域</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#controllers"><span class="toc-number">4.</span> <span class="toc-text">Controllers</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#写控制器的最佳习惯"><span class="toc-number">4.1.</span> <span class="toc-text">写控制器的最佳习惯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#控制器嵌套层级作用域套作用域"><span class="toc-number">4.2.</span> <span class="toc-text">控制器嵌套层级（作用域套作用域）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#expressions"><span class="toc-number">5.</span> <span class="toc-text">Expressions</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#表达式的解析"><span class="toc-number">5.1.</span> <span class="toc-text">表达式的解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插入字符串"><span class="toc-number">5.2.</span> <span class="toc-text">插入字符串</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="KevinHu-1024" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/全栈/" title="全栈">全栈<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/agui/" title="agui">agui<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/项目总结/" title="项目总结">项目总结<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angular/" title="angular">angular<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nodejs/" title="nodejs">nodejs<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/前端工程化/" title="前端工程化">前端工程化<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/angularJS/" title="angularJS">angularJS<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/模块化/" title="模块化">模块化<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/读书笔记/" title="读书笔记">读书笔记<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jade/" title="jade">jade<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/前端渲染/" title="前端渲染">前端渲染<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/less/" title="less">less<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AMD/" title="AMD">AMD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/requirejs/" title="requirejs">requirejs<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CMD/" title="CMD">CMD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/seajs/" title="seajs">seajs<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/commonJS/" title="commonJS">commonJS<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/browserify/" title="browserify">browserify<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gulp/" title="gulp">gulp<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 折腾即生命 <br/>
+			Keep the curiosity to the world, forever.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/KevinHu-1024" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/4244468" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/kevinhu-1024" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:kevinhu.1024@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Kevin Hu">Kevin Hu</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?325a9a8c3667dacc6d30156da64f6f51";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
